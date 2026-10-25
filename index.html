@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PCB Design Standards & Power Conversion Workbench</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-soft: #f8f9fa;
+      --border: #111111;
+      --border-light: #d1d5db;
+      --text: #000000;
+      --muted: #4b5563;
+      --mono: 'Consolas', 'Courier New', monospace;
+      --sans: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.45;
+      padding-bottom: 3rem;
+    }
+
+    /* AUTHENTICATION OVERLAY */
+    #login-overlay {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 1rem;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 380px;
+      border: 2px solid #000;
+      padding: 2rem;
+      background: #fff;
+      box-shadow: 8px 8px 0px #000;
+    }
+    .login-card h2 {
+      font-size: 1.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .login-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .login-err {
+      display: none;
+      border: 1px solid #000;
+      background: #f3f4f6;
+      color: #000;
+      font-weight: 700;
+      padding: 0.6rem;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    /* NAVIGATION & HEADER */
+    header {
+      border-bottom: 2px solid #000;
+      padding: 1rem 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand h1 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+    .brand p { font-size: 0.8rem; color: var(--muted); }
+
+    .nav-tabs { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+    .btn {
+      padding: 0.5rem 0.95rem;
+      border: 2px solid #000;
+      background: #fff;
+      color: #000;
+      font-weight: 700;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.12s ease;
+    }
+    .btn:hover { background: #f3f4f6; }
+    .btn.active { background: #000; color: #fff; }
+    .btn-pdf { background: #000; color: #fff; box-shadow: 3px 3px 0px #555; }
+    .btn-pdf:hover { background: #222; }
+
+    main {
+      max-width: 1340px;
+      margin: 1.75rem auto;
+      padding: 0 1.25rem;
+    }
+    .section-page { display: none; }
+    .section-page.active { display: block; }
+
+    /* VISUAL BANNER */
+    .visual-banner {
+      border: 2px solid #000;
+      background: var(--bg-soft);
+      padding: 1.15rem;
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 1.25rem;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .visual-banner { grid-template-columns: 1fr; }
+    }
+    .visual-info h2 { font-size: 1.1rem; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .visual-info p { font-size: 0.85rem; color: var(--muted); }
+    .svg-box {
+      border: 1.5px solid #000;
+      background: #fff;
+      padding: 0.6rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* GRID & CARDS */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 1.4rem;
+    }
+    .card {
+      border: 2px solid #000;
+      background: #fff;
+      padding: 1.25rem;
+      box-shadow: 5px 5px 0px #000;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .card-title {
+      border-bottom: 2px solid #000;
+      padding-bottom: 0.45rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-title h3 { font-size: 0.96rem; text-transform: uppercase; font-weight: 800; }
+    .badge {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      border: 1px solid #000;
+      padding: 2px 6px;
+      font-weight: 700;
+      background: var(--bg-soft);
+      white-space: nowrap;
+    }
+
+    /* INPUTS & LABELS */
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .mil-live {
+      font-family: var(--mono);
+      font-size: 0.71rem;
+      font-weight: 700;
+      background: #eee;
+      border: 1px solid #000;
+      padding: 0px 4px;
+      color: #000;
+    }
+    .field input, .field select {
+      width: 100%;
+      padding: 0.48rem 0.55rem;
+      border: 1.5px solid #000;
+      background: #fff;
+      color: #000;
+      font-family: var(--mono);
+      font-size: 0.88rem;
+    }
+    .field input:focus, .field select:focus {
+      outline: none;
+      background: #f3f4f6;
+    }
+
+    /* RESULT ITEM FORMATTING */
+    .result-box {
+      border: 1.5px solid #000;
+      background: var(--bg-soft);
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .res-item {
+      border-bottom: 1px dashed #9ca3af;
+      padding-bottom: 0.55rem;
+    }
+    .res-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .res-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .res-name { font-size: 0.82rem; font-weight: 700; }
+    .res-val {
+      font-family: var(--mono);
+      font-size: 0.93rem;
+      font-weight: 800;
+      background: #000;
+      color: #fff;
+      padding: 1px 6px;
+    }
+    .res-std {
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: #000;
+      margin-left: 3px;
+    }
+    .res-formula {
+      margin-top: 0.28rem;
+      font-family: var(--mono);
+      font-size: 0.71rem;
+      color: #374151;
+      background: #fff;
+      border: 1px solid var(--border-light);
+      padding: 4px 6px;
+      word-break: break-all;
+    }
+
+    /* TABLES */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      margin-top: 0.4rem;
+    }
+    .data-table th, .data-table td {
+      border: 1px solid #000;
+      padding: 5px 7px;
+      text-align: left;
+    }
+    .data-table th { background: #000; color: #fff; }
+    .layer-cu { background: #e5e7eb; font-weight: 700; }
+    .layer-diel { background: #ffffff; }
+
+    /* ANIMATIONS FOR WEB UI */
+    @keyframes dashFlow { to { stroke-dashoffset: -40; } }
+    @keyframes electronRun {
+      0% { transform: translateX(0px); }
+      50% { transform: translateX(65px); }
+      100% { transform: translateX(130px); }
+    }
+    @keyframes drillBounce {
+      0%, 100% { transform: translateY(-4px); }
+      50% { transform: translateY(4px); }
+    }
+    @keyframes raceCar {
+      0% { transform: translateX(0px); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(0px); }
+    }
+    .anim-flow { stroke-dasharray: 8 6; animation: dashFlow 0.9s linear infinite; }
+    .anim-fast { stroke-dasharray: 6 4; animation: dashFlow 0.4s linear infinite; }
+    .cartoon-electron { animation: electronRun 1.5s linear infinite; }
+    .cartoon-drill { animation: drillBounce 0.35s ease-in-out infinite; }
+    .cartoon-racer { animation: raceCar 1.1s ease-in-out infinite; }
+
+    /* PRINT AND A4 REPORT STYLING */
+    #a4-pdf-report { display: none; }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm 10mm;
+      }
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 9pt;
+      }
+      #login-overlay, header, main {
+        display: none !important;
+      }
+      #a4-pdf-report {
+        display: block !important;
+        width: 100%;
+      }
+      .pdf-header {
+        border: 2px solid #000;
+        padding: 6px 10px;
+        margin-bottom: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .pdf-header h1 {
+        font-size: 12pt;
+        text-transform: uppercase;
+        font-weight: 800;
+      }
+      .pdf-meta {
+        font-family: var(--mono);
+        font-size: 7.5pt;
+        text-align: right;
+      }
+      .pdf-sec {
+        border: 1.5px solid #000;
+        padding: 6px 8px;
+        margin-bottom: 8px;
+        page-break-inside: avoid;
+      }
+      .pdf-sec-title {
+        background: #000;
+        color: #fff;
+        font-weight: 800;
+        font-size: 8.5pt;
+        padding: 3px 6px;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .pdf-param-line {
+        font-family: var(--mono);
+        font-size: 7.5pt;
+        margin-bottom: 5px;
+        padding: 3px 5px;
+        border: 1px solid #000;
+        background: #f8f9fa;
+      }
+      .pdf-row-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 8px;
+        align-items: start;
+      }
+      .pdf-graph-box {
+        border: 1px solid #000;
+        padding: 4px;
+        background: #fff;
+        text-align: center;
+      }
+      .pdf-graph-box svg {
+        max-width: 100%;
+        height: auto;
+      }
+      .pdf-footer {
+        border-top: 1.5px solid #000;
+        padding-top: 4px;
+        margin-top: 6px;
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--mono);
+        font-size: 7.5pt;
+      }
+      /* Ensure animations are suppressed in print output */
+      * {
+        animation: none !important;
+        stroke-dasharray: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-overlay">
+    <div class="login-card">
+      <h2>PCB Engineering Login</h2>
+      <p>Enter your authorized Localhost credentials to unlock the IPC/IEC Design Workbench.</p>
+      <div id="login-err" class="login-err">Invalid Login ID or Password. Access Denied.</div>
+      <div class="field" style="margin-bottom: 0.85rem;">
+        <label>LOGIN ID</label>
+        <input type="text" id="login-id" placeholder="Enter Login ID" autocomplete="off" autofocus />
+      </div>
+      <div class="field" style="margin-bottom: 1.25rem;">
+        <label>PASSWORD</label>
+        <input type="password" id="login-pass" placeholder="Enter Password" onkeydown="if(event.key==='Enter') unlockPortal()" />
+      </div>
+      <button type="button" class="btn active" style="width:100%; padding:0.7rem;" onclick="unlockPortal()">
+        ENTER WORKBENCH →
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <h1>IPC / IEC PCB Design Calculator (mm & mil)</h1>
+      <p>Multi-Rail DC-DC Power Stages • Transient Thermal Analysis • IPC-2221B / IEC 62368-1</p>
+    </div>
+    <div class="nav-tabs">
+      <button type="button" id="tabbtn-stackup" class="btn active" onclick="showSection('stackup')">1. Layer Stackup</button>
+      <button type="button" id="tabbtn-power" class="btn" onclick="showSection('power')">2. Power, DC-DC & Thermal</button>
+      <button type="button" id="tabbtn-hs" class="btn" onclick="showSection('hs')">3. High-Speed Routing</button>
+      <button type="button" class="btn btn-pdf" onclick="exportA4PdfReport()">📄 Export A4 PDF Report</button>
+      <button type="button" class="btn" onclick="lockPortal()">Lock 🔒</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- SECTION 1: LAYER STACKUP -->
+    <section id="sec-stackup" class="section-page active">
+      <div class="visual-banner">
+        <div class="visual-info">
+          <h2>1. Layer Stackup & Substrate Configuration</h2>
+          <p>The copper thickness defined here dynamically propagates to the <b>Power Conversion</b> and <b>High-Speed Routing</b> engines to maintain single-source fabrication consistency.</p>
+        </div>
+        <div class="svg-box" id="stackup-svg-holder"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <h3>Stackup Parameters (mm & mil)</h3>
+            <span class="badge">IPC-4101 / IPC-2221B</span>
+          </div>
+          <div class="input-grid">
+            <div class="field">
+              <label>Copper Layer Count <span class="mil-live" id="lbl-stk-layers">4 Layers</span></label>
+              <select id="stk-layers" onchange="syncStackup()">
+                <option value="2">2 Layers (Double-Sided)</option>
+                <option value="4" selected>4 Layers (Sig / GND / PWR / Sig)</option>
+                <option value="6">6 Layers (High-Speed Multi-Layer)</option>
+                <option value="8">8 Layers (Dense Routing + Planes)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Outer Copper Weight <span class="mil-live" id="lbl-stk-cu-out">= 1.38 mil</span></label>
+              <select id="stk-cu-out" onchange="syncStackup()">
+                <option value="0.5">0.5 oz (0.0175 mm / 0.69 mil)</option>
+                <option value="1" selected>1.0 oz (0.035 mm / 1.38 mil)</option>
+                <option value="2">2.0 oz (0.070 mm / 2.76 mil)</option>
+                <option value="3">3.0 oz (0.105 mm / 4.13 mil)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Inner Copper Weight <span class="mil-live" id="lbl-stk-cu-in">= 1.38 mil</span></label>
+              <select id="stk-cu-in" onchange="syncStackup()">
+                <option value="0.5">0.5 oz (0.0175 mm / 0.69 mil)</option>
+                <option value="1" selected>1.0 oz (0.035 mm / 1.38 mil)</option>
+                <option value="2">2.0 oz (0.070 mm / 2.76 mil)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Outer Prepreg Height (H) [mm] <span class="mil-live" id="lbl-stk-pp">= 5.91 mil</span></label>
+              <input type="number" id="stk-pp" value="0.15" step="0.01" oninput="syncStackup()" />
+            </div>
+            <div class="field">
+              <label>Core Thickness [mm] <span class="mil-live" id="lbl-stk-core">= 43.31 mil</span></label>
+              <input type="number" id="stk-core" value="1.10" step="0.05" oninput="syncStackup()" />
+            </div>
+            <div class="field">
+              <label>Soldermask [mm] <span class="mil-live" id="lbl-stk-sm">= 0.98 mil</span></label>
+              <input type="number" id="stk-sm" value="0.025" step="0.005" oninput="syncStackup()" />
+            </div>
+          </div>
+          <div class="result-box" id="res-stackup"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <h3>Layer-by-Layer Breakdown (mm & mil)</h3>
+            <span class="badge">IPC-2221B §5.3</span>
+          </div>
+          <div id="stackup-table-holder"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: POWER, DC-DC CONVERSION & THERMAL -->
+    <section id="sec-power" class="section-page">
+      <div class="visual-banner">
+        <div class="visual-info">
+          <h2>2. Power Delivery & Thermal Analysis</h2>
+          <p>Calculates required trace widths, voltage drops, and transient temperature trajectories for high-voltage mains (230 V) down through distributed point-of-load (PoL) converters (24 V, 5 V, 3.3 V, 1.8 V).</p>
+        </div>
+        <div class="svg-box" id="power-banner-holder">
+          <svg width="480" height="135" viewBox="0 0 480 135">
+            <rect x="12" y="85" width="456" height="38" fill="#f3f4f6" stroke="#000" stroke-width="2"/>
+            <text x="20" y="108" font-family="Consolas, monospace" font-size="10" font-weight="bold">FR-4 SUBSTRATE (Thermal Dissipation Plane)</text>
+            <polygon points="20,85 32,50 200,50 212,85" fill="#fff" stroke="#000" stroke-width="2"/>
+            <text x="32" y="42" font-family="Consolas, monospace" font-size="9.5" font-weight="bold">COPPER TRACE (Stackup Cu Weight)</text>
+            <g class="cartoon-electron">
+              <circle cx="45" cy="68" r="9" fill="#000"/>
+              <text x="41" y="72" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">e⁻</text>
+            </g>
+            <line x1="212" y1="83" x2="285" y2="83" stroke="#000" stroke-width="2" class="anim-flow"/>
+            <text x="218" y="97" font-family="Consolas, monospace" font-size="9" font-weight="bold">Creepage Gap</text>
+            <polygon points="285,85 295,50 455,50 465,85" fill="#fff" stroke="#000" stroke-width="2"/>
+            <text x="300" y="72" font-family="Consolas, monospace" font-size="10" font-weight="bold">HV NODE (230 Vrms / 325 Vpk)</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- MULTI-RAIL DC-DC CONVERTER SECTION -->
+      <div class="card">
+        <div class="card-title">
+          <h3>Point-of-Load DC-DC Power Conversion Rails (24V, 5V, 3.3V, 1.8V)</h3>
+          <span class="badge">IPC-2221B & Energy Balance</span>
+        </div>
+        <p style="font-size:0.83rem; color:var(--muted);">
+          Each conversion stage computes input current $I_{\text{in}} = (V_{\text{out}} \cdot I_{\text{out}}) / (\eta \cdot V_{\text{in}})$, sizing traces for both input and output rails using the copper thickness configured in the Layer Stackup section.
+        </p>
+
+        <div style="overflow-x:auto;">
+          <table class="data-table" id="converter-table">
+            <thead>
+              <tr>
+                <th>Conversion Stage</th>
+                <th>Vin [V]</th>
+                <th>Vout [V]</th>
+                <th>Iout [A]</th>
+                <th>Efficiency (η)</th>
+                <th>Length [mm]</th>
+                <th>Max ΔT [°C]</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="converter-tbody">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+        <div style="display:flex; gap:0.5rem; margin-top:0.4rem;">
+          <button type="button" class="btn" onclick="addConverterRow('Custom', 24, 5, 3.0, 90, 50, 15)">+ Add Custom Conversion Stage</button>
+          <button type="button" class="btn" onclick="resetDefaultConverters()">Reset Standard Converter Cascade (24V→5V→3.3V→1.8V)</button>
+        </div>
+
+        <div class="result-box" id="res-converter-rails" style="margin-top:0.6rem;"></div>
+      </div>
+
+      <div class="grid-2">
+        <!-- MAINS 230V CLEARANCE & CREEPAGE -->
+        <div class="card">
+          <div class="card-title">
+            <h3>Mains 230 Vrms Safety Clearances & Creepage</h3>
+            <span class="badge">IPC-2221B Tbl 6-1 & IEC 62368-1</span>
+          </div>
+          <div class="input-grid">
+            <div class="field">
+              <label>Peak Working Voltage [V_pk] <span class="mil-live" id="lbl-cl-vpk">325 V</span></label>
+              <input type="number" id="cl-vpk" value="325" step="10" oninput="calcPowerAndThermal()" />
+            </div>
+            <div class="field">
+              <label>RMS Working Voltage [V_rms] <span class="mil-live" id="lbl-cl-vrms">230 V</span></label>
+              <input type="number" id="cl-vrms" value="230" step="10" oninput="calcPowerAndThermal()" />
+            </div>
+            <div class="field">
+              <label>IPC-2221B Conductor Type</label>
+              <select id="cl-type" onchange="calcPowerAndThermal()">
+                <option value="B1">B1 — Internal Layers</option>
+                <option value="B2">B2 — External Uncoated</option>
+                <option value="B4" selected>B4 — External w/ Soldermask</option>
+                <option value="A6">A6 — Uncoated Component Leads</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>IEC Insulation Level</label>
+              <select id="cl-ins" onchange="calcPowerAndThermal()">
+                <option value="1">Basic / Functional (1.0×)</option>
+                <option value="2" selected>Reinforced / Double (2.0×)</option>
+              </select>
+            </div>
+          </div>
+          <div class="result-box" id="res-clearance"></div>
+        </div>
+
+        <!-- THERMAL SIMULATION CONTROL -->
+        <div class="card">
+          <div class="card-title">
+            <h3>Transient Thermal Parameters</h3>
+            <span class="badge">Fourier Conduction / IPC-2152</span>
+          </div>
+          <div class="input-grid">
+            <div class="field">
+              <label>Ambient Temperature (T_amb) [°C]</label>
+              <input type="number" id="th-amb" value="25" step="1" oninput="calcPowerAndThermal()" />
+            </div>
+            <div class="field">
+              <label>Trace Thermal Capacitance Factor [J/°C]</label>
+              <input type="number" id="th-cap" value="0.85" step="0.05" oninput="calcPowerAndThermal()" />
+            </div>
+            <div class="field">
+              <label>Substrate Dissipation Factor (R_th) [°C/W]</label>
+              <input type="number" id="th-rth" value="28" step="1" oninput="calcPowerAndThermal()" />
+            </div>
+            <div class="field">
+              <label>Inspection Rail for Graphs</label>
+              <select id="th-rail-select" onchange="renderThermalCharts()">
+                <!-- Populated dynamically from converters -->
+              </select>
+            </div>
+          </div>
+          <div class="result-box" id="res-thermal-summary"></div>
+        </div>
+      </div>
+
+      <!-- THERMAL PLOTS -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <h3>Graph 1: Transient Temperature Rise vs. Time [T(t)]</h3>
+            <span class="badge">Thermal RC Model</span>
+          </div>
+          <div id="chart-temp-time" style="background:#fff; border:1px solid #000; padding:10px;"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <h3>Graph 2: Temperature Rise vs. Operating Current [ΔT vs. I]</h3>
+            <span class="badge">IPC-2221B Non-Linear Curve</span>
+          </div>
+          <div id="chart-temp-current" style="background:#fff; border:1px solid #000; padding:10px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: HIGH-SPEED ROUTING -->
+    <section id="sec-hs" class="section-page">
+      <div class="visual-banner">
+        <div class="visual-info">
+          <h2>3. High-Speed Synthesis & Length Constraints</h2>
+          <p>Synthesizes differential pair trace widths ($W$), spacing ($S$), single-ended reference widths ($W_{\text{se}}$), and allowable routing lengths based on targeted protocol loss budgets.</p>
+        </div>
+        <div class="svg-box" id="hs-svg-holder">
+          <svg width="480" height="135" viewBox="0 0 480 135">
+            <rect x="15" y="105" width="450" height="16" fill="#000"/>
+            <text x="135" y="117" fill="#fff" font-family="Consolas, monospace" font-size="10" font-weight="bold">CONTINUOUS GND REFERENCE PLANE</text>
+            <rect x="15" y="58" width="450" height="47" fill="#f8f9fa" stroke="#000" stroke-width="1.5"/>
+            <rect x="130" y="44" width="75" height="14" fill="#000"/>
+            <text x="125" y="38" font-family="Consolas, monospace" font-size="9" font-weight="bold" id="svg-lbl-w">W = -- mm</text>
+            <rect x="265" y="44" width="75" height="14" fill="#000"/>
+            <text x="270" y="38" font-family="Consolas, monospace" font-size="9" font-weight="bold">D- Track</text>
+            <g class="cartoon-racer">
+              <rect x="142" y="18" width="34" height="12" fill="#000"/>
+              <text x="148" y="27" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">D+</text>
+              <rect x="277" y="18" width="34" height="12" fill="#000"/>
+              <text x="283" y="27" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">D-</text>
+              <line x1="176" y1="24" x2="277" y2="24" stroke="#000" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <text x="195" y="15" font-family="Consolas, monospace" font-size="9" font-weight="bold" id="svg-lbl-s">S = -- mm</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <h3>Protocol & Target Impedance Solver</h3>
+            <span class="badge">IPC-2141A Synthesis</span>
+          </div>
+          <div class="input-grid">
+            <div class="field" style="grid-column: span 2;">
+              <label>High-Speed Line Interface Standard</label>
+              <select id="hs-interface" onchange="applyInterfacePreset()">
+                <option value="mipi" selected>MIPI D-PHY (CSI-2 / DSI) — 100Ω Diff / 2.5 Gbps</option>
+                <option value="usb2">USB 2.0 High-Speed — 90Ω Diff / 480 Mbps</option>
+                <option value="usb3">USB 3.2 Gen1/Gen2 SuperSpeed — 90Ω Diff / 10 Gbps</option>
+                <option value="eth1g">Ethernet (1000BASE-T / SGMII) — 100Ω Diff / 1.25 Gbps</option>
+                <option value="eth10g">10G Ethernet (10GBASE-KR) — 100Ω Diff / 10.3 Gbps</option>
+                <option value="pcie">PCIe Gen 3 / Gen 4 — 85Ω Diff / 16 Gbps</option>
+                <option value="hdmi">HDMI 2.0 / 2.1 TMDS — 100Ω Diff / 12 Gbps</option>
+                <option value="ddr">DDR4 / DDR5 Data & Strobe — 40Ω SE / 80Ω Diff</option>
+                <option value="custom">Custom User Specification</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Target Diff (Z_diff) [Ω] <span class="mil-live">±10% Tol</span></label>
+              <input type="number" id="hs-zdiff-target" value="100" step="1" oninput="solveHighSpeed()" />
+            </div>
+            <div class="field">
+              <label>Target SE (Z₀) [Ω] <span class="mil-live">±10% Tol</span></label>
+              <input type="number" id="hs-z0-target" value="50" step="1" oninput="solveHighSpeed()" />
+            </div>
+            <div class="field">
+              <label>Routing Layer Geometry</label>
+              <select id="hs-mode" onchange="solveHighSpeed()">
+                <option value="microstrip" selected>Surface Microstrip (Outer Layer)</option>
+                <option value="stripline">Symmetric Stripline (Inner Layer)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Coupling Ratio (S / H)</label>
+              <select id="hs-coupling" onchange="solveHighSpeed()">
+                <option value="1.0">Tightly Coupled (S = 1.0 × H)</option>
+                <option value="1.25" selected>Standard Coupled (S = 1.25 × H)</option>
+                <option value="1.5">Loosely Coupled (S = 1.5 × H)</option>
+                <option value="2.0">Wide Spacing (S = 2.0 × H)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Dielectric Constant (ε_r / Dk)</label>
+              <input type="number" id="hs-er" value="4.2" step="0.05" oninput="solveHighSpeed()" />
+            </div>
+            <div class="field">
+              <label>Loss Tangent (tan δ / Df)</label>
+              <input type="number" id="hs-df" value="0.018" step="0.002" oninput="solveHighSpeed()" />
+            </div>
+          </div>
+          <div class="result-box" id="res-hs-geometry"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <h3>Routing Length & Skew Matching Windows</h3>
+            <span class="badge">IPC-2251 / Line Specs</span>
+          </div>
+          <div class="input-grid">
+            <div class="field">
+              <label>Data Rate per Lane [Gbps]</label>
+              <input type="number" id="hs-rate" value="2.5" step="0.25" oninput="solveHighSpeed()" />
+            </div>
+            <div class="field">
+              <label>Signal Rise Time (t_r) [ps]</label>
+              <input type="number" id="hs-tr" value="120" step="10" oninput="solveHighSpeed()" />
+            </div>
+            <div class="field">
+              <label>Max Allowed Intra-Pair Skew [ps]</label>
+              <input type="number" id="hs-skew" value="10" step="1" oninput="solveHighSpeed()" />
+            </div>
+            <div class="field">
+              <label>Max Channel Loss Budget [dB]</label>
+              <input type="number" id="hs-loss-budget" value="6.0" step="0.5" oninput="solveHighSpeed()" />
+            </div>
+          </div>
+          <div class="result-box" id="res-hs-lengths"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DEDICATED PRINT / A4 PDF REPORT CONTAINER (NO ANIMATIONS) -->
+  <div id="a4-pdf-report">
+    <div class="pdf-header">
+      <div>
+        <h1>PCB Design Standards & Verification Datasheet (A4)</h1>
+        <div style="font-size:7.5pt;">Compliance: IPC-2221B • IPC-2152 • IPC-2141A • IPC-4101 • IEC 62368-1</div>
+      </div>
+      <div class="pdf-meta" id="pdf-timestamp"></div>
+    </div>
+
+    <!-- SECTION 1 REPORT -->
+    <div class="pdf-sec">
+      <div class="pdf-sec-title">
+        <span>Section 1: PCB Layer Stackup (Linked to Power & Signal Traces)</span>
+        <span>[IPC-4101 / IPC-2221B §5.3]</span>
+      </div>
+      <div class="pdf-param-line" id="pdf-params-stackup"></div>
+      <div class="pdf-row-grid">
+        <div id="pdf-res-stackup"></div>
+        <div class="pdf-graph-box" id="pdf-static-stackup"></div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 REPORT -->
+    <div class="pdf-sec">
+      <div class="pdf-sec-title">
+        <span>Section 2: Multi-Rail DC-DC Stages, Mains 230V Safety & Thermal Performance</span>
+        <span>[IPC-2221B §6.2 & IEC 62368-1]</span>
+      </div>
+      <div class="pdf-param-line" id="pdf-params-power"></div>
+      <div id="pdf-table-converters" style="margin-bottom:6px;"></div>
+      <div class="pdf-row-grid">
+        <div class="pdf-graph-box" id="pdf-graph-temp-time"></div>
+        <div class="pdf-graph-box" id="pdf-graph-temp-current"></div>
+      </div>
+      <div id="pdf-res-clearance" style="margin-top:6px;"></div>
+    </div>
+
+    <!-- SECTION 3 REPORT -->
+    <div class="pdf-sec">
+      <div class="pdf-sec-title">
+        <span>Section 3: High-Speed Interface Widths, Spacing & Max Routing Lengths</span>
+        <span>[IPC-2141A & IPC-2251]</span>
+      </div>
+      <div class="pdf-param-line" id="pdf-params-hs"></div>
+      <div class="pdf-row-grid">
+        <div id="pdf-res-hs"></div>
+        <div class="pdf-graph-box" id="pdf-static-hs"></div>
+      </div>
+    </div>
+
+    <div class="pdf-footer">
+      <span>Verified By: Lead Hardware / Layout Engineer</span>
+      <span>Units: Millimeters (mm) & Mils (0.001 in)</span>
+      <span>Engineering Sign-off: _________________________</span>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // SYSTEM AUTHENTICATION & ACCESS
+    // =========================================================
+    const USER_ID = "admin";
+    const USER_PASS = "pcb2026";
+
+    function toMil(mm) { return mm / 0.0254; }
+
+    function unlockPortal() {
+      const u = document.getElementById("login-id").value.trim();
+      const p = document.getElementById("login-pass").value.trim();
+      if (u === USER_ID && p === USER_PASS) {
+        document.getElementById("login-err").style.display = "none";
+        document.getElementById("login-overlay").style.display = "none";
+      } else {
+        document.getElementById("login-err").style.display = "block";
+      }
+    }
+
+    function lockPortal() {
+      document.getElementById("login-id").value = "";
+      document.getElementById("login-pass").value = "";
+      document.getElementById("login-overlay").style.display = "flex";
+    }
+
+    function showSection(name) {
+      ["stackup", "power", "hs"].forEach(s => {
+        document.getElementById("sec-" + s).classList.remove("active");
+        document.getElementById("tabbtn-" + s).classList.remove("active");
+      });
+      document.getElementById("sec-" + name).classList.add("active");
+      document.getElementById("tabbtn-" + name).classList.add("active");
+      if (name === "power") renderThermalCharts();
+    }
+
+    function makeRow(title, val, std, formula) {
+      return `
+        <div class="res-item">
+          <div class="res-header">
+            <span class="res-name">${title}</span>
+            <span>
+              <span class="res-val">${val}</span>
+              <span class="res-std">[${std}]</span>
+            </span>
+          </div>
+          <div class="res-formula">[Formula: ${formula}]</div>
+        </div>
+      `;
+    }
+
+    // =========================================================
+    // 1. LAYER STACKUP ENGINE
+    // =========================================================
+    let activeCuOuterMm = 0.035;
+    let activeCuInnerMm = 0.035;
+    let activePrepregMm = 0.15;
+
+    function syncStackup() {
+      const N = parseInt(document.getElementById("stk-layers").value, 10) || 4;
+      const cuOutOz = parseFloat(document.getElementById("stk-cu-out").value) || 1;
+      const cuInOz = parseFloat(document.getElementById("stk-cu-in").value) || 1;
+      const pp = parseFloat(document.getElementById("stk-pp").value) || 0.15;
+      const core = parseFloat(document.getElementById("stk-core").value) || 1.10;
+      const sm = parseFloat(document.getElementById("stk-sm").value) || 0.025;
+
+      activeCuOuterMm = cuOutOz * 0.035;
+      activeCuInnerMm = cuInOz * 0.035;
+      activePrepregMm = pp;
+
+      document.getElementById("lbl-stk-layers").textContent = `${N} Layers`;
+      document.getElementById("lbl-stk-cu-out").textContent = `= ${toMil(activeCuOuterMm).toFixed(2)} mil`;
+      document.getElementById("lbl-stk-cu-in").textContent = `= ${toMil(activeCuInnerMm).toFixed(2)} mil`;
+      document.getElementById("lbl-stk-pp").textContent = `= ${toMil(pp).toFixed(2)} mil`;
+      document.getElementById("lbl-stk-core").textContent = `= ${toMil(core).toFixed(1)} mil`;
+      document.getElementById("lbl-stk-sm").textContent = `= ${toMil(sm).toFixed(2)} mil`;
+
+      let rows = [];
+      let totalMm = 2 * sm;
+      rows.push({ name: "Top Soldermask", type: "Mask", t: sm });
+      rows.push({ name: "L1 (Outer Top Cu)", type: "Copper", t: activeCuOuterMm });
+      totalMm += activeCuOuterMm;
+
+      if (N === 2) {
+        rows.push({ name: "FR-4 Substrate Core", type: "Dielectric", t: core });
+        totalMm += core;
+      } else {
+        const innerPairs = (N - 2) / 2;
+        for (let i = 1; i <= innerPairs; i++) {
+          rows.push({ name: `Prepreg Dielectric ${i}`, type: "Dielectric", t: pp });
+          rows.push({ name: `L${i + 1} (Inner Plane Cu)`, type: "Copper", t: activeCuInnerMm });
+          totalMm += pp + activeCuInnerMm;
+        }
+        rows.push({ name: "Center FR-4 Core", type: "Dielectric", t: core });
+        totalMm += core;
+        for (let i = innerPairs; i >= 1; i--) {
+          const lNum = N - i;
+          rows.push({ name: `L${lNum} (Inner Plane Cu)`, type: "Copper", t: activeCuInnerMm });
+          rows.push({ name: `Prepreg Dielectric`, type: "Dielectric", t: pp });
+          totalMm += pp + activeCuInnerMm;
+        }
+      }
+
+      rows.push({ name: `L${N} (Outer Bottom Cu)`, type: "Copper", t: activeCuOuterMm });
+      rows.push({ name: "Bottom Soldermask", type: "Mask", t: sm });
+      totalMm += activeCuOuterMm;
+
+      const totalMil = toMil(totalMm);
+
+      document.getElementById("res-stackup").innerHTML =
+        makeRow(
+          "Total Board Thickness",
+          `${totalMm.toFixed(3)} mm (${totalMil.toFixed(1)} mil)`,
+          "IPC-2221B §5.3 / IPC-4101",
+          `T_board = 2·SM + ${N}·Cu + ΣDielectric = ${totalMm.toFixed(3)} mm (${totalMil.toFixed(1)} mil)`
+        ) +
+        makeRow(
+          "Fab Tolerance Limit (±10%)",
+          `${(totalMm * 0.9).toFixed(2)} to ${(totalMm * 1.1).toFixed(2)} mm`,
+          "IPC-6012 Class 2",
+          `Tol = ${totalMm.toFixed(2)} mm ± ${(totalMm * 0.1).toFixed(2)} mm (±${(totalMil * 0.1).toFixed(1)} mil)`
+        );
+
+      let tbl = `<table class="data-table"><thead><tr><th>Layer Identifier</th><th>Material</th><th>Thickness [mm]</th><th>Thickness [mil]</th></tr></thead><tbody>`;
+      rows.forEach(r => {
+        const cls = r.type === "Copper" ? "layer-cu" : "layer-diel";
+        tbl += `<tr class="${cls}"><td>${r.name}</td><td>${r.type}</td><td>${r.t.toFixed(3)} mm</td><td>${toMil(r.t).toFixed(2)} mil</td></tr>`;
+      });
+      tbl += `</tbody></table>`;
+      document.getElementById("stackup-table-holder").innerHTML = tbl;
+
+      // Build interactive SVG
+      let svgY = 24;
+      let svgRows = "";
+      rows.forEach((r) => {
+        const h = r.type === "Copper" ? 11 : (r.type === "Mask" ? 6 : 18);
+        const fill = r.type === "Copper" ? "#111" : (r.type === "Mask" ? "#d1d5db" : "#fff");
+        const txtCol = r.type === "Copper" ? "#fff" : "#000";
+        svgRows += `<rect x="15" y="${svgY}" width="305" height="${h}" fill="${fill}" stroke="#000" stroke-width="1.2"/>`;
+        if (h >= 11) {
+          svgRows += `<text x="22" y="${svgY + h - 3}" fill="${txtCol}" font-family="Consolas, monospace" font-size="8.5" font-weight="bold">${r.name}: ${r.t.toFixed(3)}mm (${toMil(r.t).toFixed(1)}mil)</text>`;
+        }
+        svgY += h;
+      });
+
+      svgRows += `<rect x="355" y="24" width="34" height="${svgY - 24}" fill="#fff" stroke="#000" stroke-width="2"/>`;
+      svgRows += `<line x1="372" y1="24" x2="372" y2="${svgY}" stroke="#000" stroke-width="3" class="anim-flow"/>`;
+      svgRows += `
+        <g class="cartoon-drill">
+          <path d="M 356 12 Q 372 2 388 12 Z" fill="#000"/>
+          <rect x="360" y="12" width="24" height="10" fill="#fff" stroke="#000" stroke-width="1.5"/>
+          <polygon points="366,22 378,22 372,32" fill="#000"/>
+          <text x="394" y="18" font-family="Consolas, monospace" font-size="8.5" font-weight="bold">🤖 DRILL BOT</text>
+        </g>
+      `;
+      svgRows += `<text x="330" y="${svgY + 13}" font-family="Consolas, monospace" font-size="9" font-weight="bold">PTH VIA (${totalMil.toFixed(0)} mil)</text>`;
+
+      document.getElementById("stackup-svg-holder").innerHTML =
+        `<svg width="490" height="${svgY + 20}" viewBox="0 0 490 ${svgY + 20}">${svgRows}</svg>`;
+
+      calcPowerAndThermal();
+      solveHighSpeed();
+    }
+
+    // =========================================================
+    // 2. POWER CONVERSION & TRANSIENT THERMAL ENGINE
+    // =========================================================
+    let converterStages = [
+      { name: "Stage 1 (Main Bus)", vin: 24, vout: 5, iout: 5.0, eff: 92, len: 70, dt: 15 },
+      { name: "Stage 2 (Logic / Core)", vin: 5, vout: 3.3, iout: 4.0, eff: 94, len: 45, dt: 15 },
+      { name: "Stage 3 (MCU / I/O)", vin: 5, vout: 1.8, iout: 2.5, eff: 88, len: 35, dt: 10 }
+    ];
+
+    function resetDefaultConverters() {
+      converterStages = [
+        { name: "Stage 1 (Main Bus)", vin: 24, vout: 5, iout: 5.0, eff: 92, len: 70, dt: 15 },
+        { name: "Stage 2 (Logic / Core)", vin: 5, vout: 3.3, iout: 4.0, eff: 94, len: 45, dt: 15 },
+        { name: "Stage 3 (MCU / I/O)", vin: 5, vout: 1.8, iout: 2.5, eff: 88, len: 35, dt: 10 }
+      ];
+      renderConverterRows();
+      calcPowerAndThermal();
+    }
+
+    function addConverterRow(name, vin, vout, iout, eff, len, dt) {
+      converterStages.push({
+        name: `${name} (${vin}V→${vout}V)`,
+        vin: vin,
+        vout: vout,
+        iout: iout,
+        eff: eff,
+        len: len,
+        dt: dt
+      });
+      renderConverterRows();
+      calcPowerAndThermal();
+    }
+
+    function deleteConverterRow(idx) {
+      if (converterStages.length > 1) {
+        converterStages.splice(idx, 1);
+        renderConverterRows();
+        calcPowerAndThermal();
+      }
+    }
+
+    function renderConverterRows() {
+      const tbody = document.getElementById("converter-tbody");
+      tbody.innerHTML = "";
+      converterStages.forEach((c, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><input type="text" value="${c.name}" onchange="updateConverterVal(${idx}, 'name', this.value)" style="width:140px; font-weight:700;"/></td>
+          <td><input type="number" value="${c.vin}" step="0.5" onchange="updateConverterVal(${idx}, 'vin', parseFloat(this.value))" style="width:55px;"/></td>
+          <td><input type="number" value="${c.vout}" step="0.1" onchange="updateConverterVal(${idx}, 'vout', parseFloat(this.value))" style="width:55px;"/></td>
+          <td><input type="number" value="${c.iout}" step="0.1" onchange="updateConverterVal(${idx}, 'iout', parseFloat(this.value))" style="width:55px;"/></td>
+          <td><input type="number" value="${c.eff}" step="1" onchange="updateConverterVal(${idx}, 'eff', parseFloat(this.value))" style="width:50px;"/> %</td>
+          <td><input type="number" value="${c.len}" step="5" onchange="updateConverterVal(${idx}, 'len', parseFloat(this.value))" style="width:55px;"/></td>
+          <td><input type="number" value="${c.dt}" step="1" onchange="updateConverterVal(${idx}, 'dt', parseFloat(this.value))" style="width:50px;"/></td>
+          <td><button type="button" class="btn" style="padding:2px 6px;" onclick="deleteConverterRow(${idx})">✕</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Update selector for thermal graphs
+      const sel = document.getElementById("th-rail-select");
+      sel.innerHTML = "";
+      converterStages.forEach((c, idx) => {
+        const opt = document.createElement("option");
+        opt.value = idx;
+        opt.textContent = `${c.name} [Vout=${c.vout}V @ ${c.iout}A]`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function updateConverterVal(idx, key, val) {
+      converterStages[idx][key] = val;
+      calcPowerAndThermal();
+    }
+
+    function calcPowerAndThermal() {
+      // IPC-2221B Copper Thickness link from stackup:
+      const tCu_mm = activeCuOuterMm;
+      const tCu_mil = toMil(tCu_mm);
+
+      let html = "";
+      let pdfTableRows = "";
+
+      converterStages.forEach((c, idx) => {
+        const iOut = Math.max(0.01, c.iout);
+        const eff = Math.min(100, Math.max(10, c.eff)) / 100.0;
+        const pOut = c.vout * iOut;
+        const pIn = pOut / eff;
+        const iIn = pIn / Math.max(0.1, c.vin);
+        const dT = Math.max(1, c.dt);
+        const L_mm = Math.max(1, c.len);
+
+        // Required cross-section area in mil^2 (IPC-2221B external: k=0.048)
+        const areaOut_mil2 = Math.pow(iOut / (0.048 * Math.pow(dT, 0.44)), 1 / 0.725);
+        const wOut_mil = areaOut_mil2 / tCu_mil;
+        const wOut_mm = wOut_mil * 0.0254;
+
+        const areaIn_mil2 = Math.pow(iIn / (0.048 * Math.pow(dT, 0.44)), 1 / 0.725);
+        const wIn_mil = areaIn_mil2 / tCu_mil;
+        const wIn_mm = wIn_mil * 0.0254;
+
+        // Trace resistance, voltage drop, and Joule power loss at operating temperature
+        const R_out = (1.724e-5 * (1 + 0.00393 * dT) * L_mm) / (wOut_mm * tCu_mm);
+        const vDrop_out = iOut * R_out;
+        const pLoss_out = iOut * iOut * R_out;
+
+        html += makeRow(
+          `${c.name}: Output Rail (${c.vout} V @ ${iOut.toFixed(1)} A)`,
+          `${wOut_mm.toFixed(3)} mm (${wOut_mil.toFixed(1)} mil)`,
+          "IPC-2221B §6.2",
+          `A = (${iOut}/(0.048·${dT}^0.44))^1.379 = ${areaOut_mil2.toFixed(1)} mil²; W_out = A / ${tCu_mil.toFixed(2)} mil; V_drop = ${(vDrop_out * 1000).toFixed(1)} mV; P_loss = ${(pLoss_out * 1000).toFixed(1)} mW`
+        );
+        html += makeRow(
+          `${c.name}: Input Trace (${c.vin} V @ I_in = ${iIn.toFixed(2)} A, η = ${(eff * 100).toFixed(0)}%)`,
+          `${wIn_mm.toFixed(3)} mm (${wIn_mil.toFixed(1)} mil)`,
+          "Energy Conservation & IPC-2221B",
+          `P_in = ${pOut.toFixed(1)}W / ${eff} = ${pIn.toFixed(1)}W; I_in = ${pIn.toFixed(1)}W / ${c.vin}V = ${iIn.toFixed(2)}A; W_in = ${wIn_mm.toFixed(3)} mm (${wIn_mil.toFixed(1)} mil)`
+        );
+
+        pdfTableRows += `
+          <tr>
+            <td><b>${c.name}</b></td>
+            <td>${c.vin} V → ${c.vout} V</td>
+            <td>${iOut.toFixed(1)} A</td>
+            <td>${(eff * 100).toFixed(0)} %</td>
+            <td><b>${wOut_mm.toFixed(2)} mm (${wOut_mil.toFixed(1)} mil)</b></td>
+            <td>${wIn_mm.toFixed(2)} mm (${wIn_mil.toFixed(1)} mil)</td>
+            <td>${(vDrop_out * 1000).toFixed(1)} mV</td>
+            <td>+${dT} °C</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById("res-converter-rails").innerHTML = html;
+
+      // MAINS 230V CLEARANCE & CREEPAGE
+      const Vpk = Math.max(0, parseFloat(document.getElementById("cl-vpk").value) || 325);
+      const Vrms = Math.max(0, parseFloat(document.getElementById("cl-vrms").value) || 230);
+      const type = document.getElementById("cl-type").value;
+      const ins = parseFloat(document.getElementById("cl-ins").value) || 2;
+
+      document.getElementById("lbl-cl-vpk").textContent = `${Vpk} V_pk`;
+      document.getElementById("lbl-cl-vrms").textContent = `${Vrms} V_rms`;
+
+      let ipcClearMm = 0, ipcForm = "";
+      if (type === "B1") {
+        ipcClearMm = Vpk <= 500 ? 0.25 : 0.25 + 0.0025 * (Vpk - 500);
+        ipcForm = Vpk <= 500 ? "Table 6-1 B1 = 0.25 mm (9.8 mil)" : `0.25 + 0.0025×(${Vpk}-500)`;
+      } else if (type === "B2") {
+        ipcClearMm = Vpk <= 500 ? 1.25 : 1.25 + 0.005 * (Vpk - 500);
+        ipcForm = Vpk <= 500 ? "Table 6-1 B2 Base = 1.25 mm (49.2 mil)" : `1.25 + 0.005×(${Vpk}-500)`;
+      } else if (type === "B4") {
+        ipcClearMm = Vpk <= 500 ? 0.40 : 0.40 + 0.00305 * (Vpk - 500);
+        ipcForm = Vpk <= 500 ? "Table 6-1 B4 Base = 0.40 mm (15.7 mil)" : `0.40 + 0.00305×(${Vpk}-500)`;
+      } else {
+        ipcClearMm = Vpk <= 500 ? 1.50 : 1.50 + 0.00305 * (Vpk - 500);
+        ipcForm = Vpk <= 500 ? "Table 6-1 A6 Base = 1.50 mm (59.1 mil)" : `1.50 + 0.00305×(${Vpk}-500)`;
+      }
+
+      const creepMm = Math.max(0.5, Vrms * 0.010) * ins;
+      const airMm = (Vpk <= 420 ? 1.5 : 1.5 + (Vpk - 420) * 0.004) * ins;
+
+      document.getElementById("res-clearance").innerHTML =
+        makeRow(`Mains Clearance Spacing (${type})`, `${ipcClearMm.toFixed(2)} mm (${toMil(ipcClearMm).toFixed(1)} mil)`, `IPC-2221B Tbl 6-1 (${type})`, ipcForm) +
+        makeRow("Mains Creepage Distance (d_cr)", `${creepMm.toFixed(2)} mm (${toMil(creepMm).toFixed(1)} mil)`, "IEC 62368-1 §5.4.3", `d_cr = (${Vrms}V × 0.010) × Ins(${ins}) = ${creepMm.toFixed(2)} mm`) +
+        makeRow("Mains Air Clearance (d_cl)", `${airMm.toFixed(2)} mm (${toMil(airMm).toFixed(1)} mil)`, "IEC 62368-1 §5.4.2", `d_cl = Base_Air(${Vpk}V) × Ins(${ins}) = ${airMm.toFixed(2)} mm`);
+
+      renderThermalCharts();
+    }
+
+    // =========================================================
+    // TRANSIENT THERMAL GRAPHS (TIME & CURRENT DOMAIN)
+    // =========================================================
+    function renderThermalCharts() {
+      const idx = parseInt(document.getElementById("th-rail-select").value, 10) || 0;
+      const c = converterStages[idx] || converterStages[0];
+      const T_amb = parseFloat(document.getElementById("th-amb").value) || 25;
+      const C_th = parseFloat(document.getElementById("th-cap").value) || 0.85; // J/°C
+      const R_th = parseFloat(document.getElementById("th-rth").value) || 28;  // °C/W
+
+      const tau = Math.max(1, R_th * C_th); // Thermal time constant in seconds
+      const dT_steady = Math.max(1, c.dt);
+      const T_max = T_amb + dT_steady;
+
+      document.getElementById("res-thermal-summary").innerHTML =
+        makeRow("Selected Rail for Thermal Inspection", `${c.name} (${c.vout}V @ ${c.iout}A)`, "Inspection State", `Operating Load = ${c.iout} A; Steady-State ΔT = +${dT_steady}°C`) +
+        makeRow("Thermal Time Constant (τ)", `${tau.toFixed(1)} Seconds`, "First-Order Thermal RC", `τ = R_th × C_th = ${R_th}°C/W × ${C_th} J/°C = ${tau.toFixed(1)} s; Settles in 5τ (${(5 * tau).toFixed(0)} s)`);
+
+      // 1. Chart 1: Temperature vs Time (SVG)
+      const wSvg = 460, hSvg = 180, padL = 45, padB = 30, padT = 20, padR = 20;
+      const plotW = wSvg - padL - padR;
+      const plotH = hSvg - padB - padT;
+
+      const totalTime = Math.ceil(5 * tau);
+      let pathD1 = "";
+      for (let s = 0; s <= 50; s++) {
+        const t = (s / 50) * totalTime;
+        const T = T_amb + dT_steady * (1 - Math.exp(-t / tau));
+        const x = padL + (t / totalTime) * plotW;
+        const y = padT + plotH - ((T - T_amb) / (dT_steady * 1.15)) * plotH;
+        pathD1 += (s === 0 ? "M " : "L ") + `${x.toFixed(1)} ${y.toFixed(1)} `;
+      }
+
+      const svgChart1 = `
+        <svg width="${wSvg}" height="${hSvg}" viewBox="0 0 ${wSvg} ${hSvg}">
+          <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
+          <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
+          <text x="${padL - 38}" y="${padT + 10}" font-family="Consolas, monospace" font-size="9" font-weight="bold">${T_max.toFixed(0)}°C</text>
+          <text x="${padL - 38}" y="${padT + plotH}" font-family="Consolas, monospace" font-size="9" font-weight="bold">${T_amb.toFixed(0)}°C</text>
+          <text x="${padL + plotW - 35}" y="${padT + plotH + 18}" font-family="Consolas, monospace" font-size="9" font-weight="bold">${totalTime}s (5τ)</text>
+          <text x="${padL + 10}" y="${padT + plotH + 18}" font-family="Consolas, monospace" font-size="9" font-weight="bold">Time [Seconds] →</text>
+          <path d="${pathD1}" fill="none" stroke="#000" stroke-width="2.5"/>
+          <line x1="${padL}" y1="${padT + plotH - (dT_steady / (dT_steady * 1.15)) * plotH}" x2="${padL + plotW}" y2="${padT + plotH - (dT_steady / (dT_steady * 1.15)) * plotH}" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
+          <text x="${padL + 15}" y="${padT + 18}" font-family="Consolas, monospace" font-size="9.5" font-weight="bold">T(t) = ${T_amb}°C + ${dT_steady}°C·(1 - e^-t/${tau.toFixed(0)}s)</text>
+        </svg>
+      `;
+      document.getElementById("chart-temp-time").innerHTML = svgChart1;
+
+      // 2. Chart 2: Temperature Rise vs Current (SVG)
+      const maxCurrent = c.iout * 2.2;
+      let pathD2 = "";
+      for (let s = 0; s <= 50; s++) {
+        const cur = (s / 50) * maxCurrent;
+        // IPC-2221 relation: dT = (I / (k * A^0.725))^(1/0.44)
+        const dtVal = dT_steady * Math.pow(cur / Math.max(0.1, c.iout), 1 / 0.44);
+        const x = padL + (cur / maxCurrent) * plotW;
+        const clampedDt = Math.min(dtVal, dT_steady * 3.5);
+        const y = padT + plotH - (clampedDt / (dT_steady * 3.5)) * plotH;
+        pathD2 += (s === 0 ? "M " : "L ") + `${x.toFixed(1)} ${y.toFixed(1)} `;
+      }
+
+      const xOper = padL + (c.iout / maxCurrent) * plotW;
+      const yOper = padT + plotH - (dT_steady / (dT_steady * 3.5)) * plotH;
+
+      const svgChart2 = `
+        <svg width="${wSvg}" height="${hSvg}" viewBox="0 0 ${wSvg} ${hSvg}">
+          <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
+          <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
+          <text x="${padL - 38}" y="${padT + 10}" font-family="Consolas, monospace" font-size="9" font-weight="bold">+${(dT_steady * 3.5).toFixed(0)}°C</text>
+          <text x="${padL - 32}" y="${padT + plotH}" font-family="Consolas, monospace" font-size="9" font-weight="bold">0°C</text>
+          <text x="${padL + plotW - 40}" y="${padT + plotH + 18}" font-family="Consolas, monospace" font-size="9" font-weight="bold">${maxCurrent.toFixed(1)}A</text>
+          <text x="${padL + 10}" y="${padT + plotH + 18}" font-family="Consolas, monospace" font-size="9" font-weight="bold">Current (I) [Amps] →</text>
+          <path d="${pathD2}" fill="none" stroke="#000" stroke-width="2.5"/>
+          <circle cx="${xOper}" cy="${yOper}" r="5" fill="#000"/>
+          <text x="${xOper + 8}" y="${yOper - 4}" font-family="Consolas, monospace" font-size="9" font-weight="bold">Operating Point: ${c.iout.toFixed(1)}A (+${dT_steady}°C)</text>
+        </svg>
+      `;
+      document.getElementById("chart-temp-current").innerHTML = svgChart2;
+    }
+
+    // =========================================================
+    // 3. HIGH-SPEED INTERFACE SOLVER
+    // =========================================================
+    const HS_PRESETS = {
+      mipi:   { zDiff: 100, z0: 50, rate: 2.5,  tr: 120, skew: 10, loss: 6.0,  std: "MIPI D-PHY v2.5" },
+      usb2:   { zDiff: 90,  z0: 45, rate: 0.48, tr: 500, skew: 25, loss: 5.5,  std: "USB 2.0 Spec §7.1" },
+      usb3:   { zDiff: 90,  z0: 45, rate: 10.0, tr: 35,  skew: 5,  loss: 8.5,  std: "USB 3.2 SuperSpeed" },
+      eth1g:  { zDiff: 100, z0: 50, rate: 1.25, tr: 200, skew: 20, loss: 6.0,  std: "IEEE 802.3ab 1000BASE-T" },
+      eth10g: { zDiff: 100, z0: 50, rate: 10.3, tr: 30,  skew: 4,  loss: 10.0, std: "10GBASE-KR IEEE 802.3ap" },
+      pcie:   { zDiff: 85,  z0: 42.5, rate: 16.0, tr: 22, skew: 3, loss: 12.0, std: "PCIe CEM Gen 3/4" },
+      hdmi:   { zDiff: 100, z0: 50, rate: 12.0, tr: 25,  skew: 4,  loss: 9.0,  std: "HDMI 2.1 TMDS" },
+      ddr:    { zDiff: 80,  z0: 40, rate: 3.2,  tr: 80,  skew: 5,  loss: 4.0,  std: "JEDEC DDR4/DDR5" }
+    };
+
+    function applyInterfacePreset() {
+      const key = document.getElementById("hs-interface").value;
+      if (HS_PRESETS[key]) {
+        const p = HS_PRESETS[key];
+        document.getElementById("hs-zdiff-target").value = p.zDiff;
+        document.getElementById("hs-z0-target").value = p.z0;
+        document.getElementById("hs-rate").value = p.rate;
+        document.getElementById("hs-tr").value = p.tr;
+        document.getElementById("hs-skew").value = p.skew;
+        document.getElementById("hs-loss-budget").value = p.loss;
+      }
+      solveHighSpeed();
+    }
+
+    function solveHighSpeed() {
+      const ifaceKey = document.getElementById("hs-interface").value;
+      const ifaceStd = HS_PRESETS[ifaceKey] ? HS_PRESETS[ifaceKey].std : "IPC-2141A / Custom SI";
+      const targetZdiff = Math.max(30, parseFloat(document.getElementById("hs-zdiff-target").value) || 100);
+      const targetZ0 = Math.max(20, parseFloat(document.getElementById("hs-z0-target").value) || 50);
+      const mode = document.getElementById("hs-mode").value;
+      const shRatio = parseFloat(document.getElementById("hs-coupling").value) || 1.25;
+
+      // Link directly to stackup parameters:
+      const H = activePrepregMm;
+      const T = activeCuOuterMm;
+      const er = Math.max(1.8, parseFloat(document.getElementById("hs-er").value) || 4.2);
+      const df = Math.max(0.001, parseFloat(document.getElementById("hs-df").value) || 0.018);
+
+      const dataRateGbps = Math.max(0.1, parseFloat(document.getElementById("hs-rate").value) || 2.5);
+      const tr_ps = Math.max(5, parseFloat(document.getElementById("hs-tr").value) || 120);
+      const skew_ps = Math.max(0.5, parseFloat(document.getElementById("hs-skew").value) || 10);
+      const lossBudget_dB = Math.max(0.5, parseFloat(document.getElementById("hs-loss-budget").value) || 6.0);
+
+      const S_mm = H * shRatio;
+      let couplingFactor = 1.0, wDiff_mm = 0.20, wSe_mm = 0.25, wDiffFormula = "", wSeFormula = "";
+
+      if (mode === "microstrip") {
+        couplingFactor = 1 - 0.48 * Math.exp(-0.96 * (S_mm / H));
+        const reqZ0_diff = targetZdiff / (2 * couplingFactor);
+        wDiff_mm = ((5.98 * H) / Math.exp((reqZ0_diff * Math.sqrt(er + 1.41)) / 87) - T) / 0.8;
+        wSe_mm = ((5.98 * H) / Math.exp((targetZ0 * Math.sqrt(er + 1.41)) / 87) - T) / 0.8;
+        wDiffFormula = `Z₀_req = ${reqZ0_diff.toFixed(1)}Ω; W = [5.98·H / e^(${reqZ0_diff.toFixed(1)}·√(εr+1.41)/87) - T] / 0.8 = ${wDiff_mm.toFixed(3)} mm (${toMil(wDiff_mm).toFixed(1)} mil)`;
+        wSeFormula = `W_se = [5.98·H / e^(${targetZ0}·√(εr+1.41)/87) - T] / 0.8 = ${wSe_mm.toFixed(3)} mm (${toMil(wSe_mm).toFixed(1)} mil)`;
+      } else {
+        const b = 2 * H + T;
+        couplingFactor = 1 - 0.347 * Math.exp(-2.9 * (S_mm / b));
+        const reqZ0_diff = targetZdiff / (2 * couplingFactor);
+        wDiff_mm = ((4 * b) / (0.67 * Math.PI * Math.exp((reqZ0_diff * Math.sqrt(er)) / 60)) - T) / 0.8;
+        wSe_mm = ((4 * b) / (0.67 * Math.PI * Math.exp((targetZ0 * Math.sqrt(er)) / 60)) - T) / 0.8;
+        wDiffFormula = `b = 2H+T = ${b.toFixed(3)} mm; W = [4b / (0.67·π·e^(Z₀·√εr/60)) - T] / 0.8 = ${wDiff_mm.toFixed(3)} mm`;
+        wSeFormula = `W_se = [4b / (0.67·π·e^(${targetZ0}·√εr/60)) - T] / 0.8 = ${wSe_mm.toFixed(3)} mm`;
+      }
+
+      wDiff_mm = Math.max(0.05, wDiff_mm);
+      wSe_mm = Math.max(0.05, wSe_mm);
+      const minGuard_mm = Math.max(3 * wDiff_mm, 2.5 * H);
+
+      document.getElementById("svg-lbl-w").textContent = `W = ${wDiff_mm.toFixed(2)} mm (${toMil(wDiff_mm).toFixed(1)} mil)`;
+      document.getElementById("svg-lbl-s").textContent = `S = ${S_mm.toFixed(2)} mm (${toMil(S_mm).toFixed(1)} mil)`;
+
+      document.getElementById("res-hs-geometry").innerHTML =
+        makeRow(`Required Diff Trace Width (W) for ${targetZdiff}Ω`, `${wDiff_mm.toFixed(3)} mm (${toMil(wDiff_mm).toFixed(1)} mil)`, `IPC-2141A / ${ifaceStd}`, wDiffFormula) +
+        makeRow(`Required Diff Trace Spacing (S) for ${targetZdiff}Ω`, `${S_mm.toFixed(3)} mm (${toMil(S_mm).toFixed(1)} mil)`, "IPC-2141A Edge-Coupled", `S = ${shRatio} × H = ${S_mm.toFixed(3)} mm (${toMil(S_mm).toFixed(1)} mil)`) +
+        makeRow(`Single-Ended Reference Width (W_se) for ${targetZ0}Ω`, `${wSe_mm.toFixed(3)} mm (${toMil(wSe_mm).toFixed(1)} mil)`, "IPC-2141A §4.2", wSeFormula) +
+        makeRow("Minimum Pair-to-Signal Clearance (3W Guard)", `${minGuard_mm.toFixed(2)} mm (${toMil(minGuard_mm).toFixed(1)} mil)`, "IPC-2251 Crosstalk Limit", `S_guard = max(3W, 2.5H) = ${minGuard_mm.toFixed(2)} mm`);
+
+      const er_eff = mode === "microstrip" ? (er + 1) / 2 + ((er - 1) / 2) * (1 / Math.sqrt(1 + 12 * (H / wDiff_mm))) : er;
+      const vp_mm_ps = 0.29979 / Math.sqrt(er_eff);
+
+      const lCrit_mm = (tr_ps * vp_mm_ps) / 6.0;
+      const lMin_mm = Math.max(lCrit_mm, 5.0);
+
+      const fNyq_GHz = dataRateGbps / 2.0;
+      const alpha_d = 0.0912 * fNyq_GHz * Math.sqrt(er_eff) * df;
+      const alpha_c = (0.0019 * Math.sqrt(fNyq_GHz)) / wDiff_mm;
+      const totalLoss = Math.max(0.0005, alpha_d + alpha_c);
+
+      const lMax_mm = lossBudget_dB / totalLoss;
+      const maxDeltaL_mm = skew_ps * vp_mm_ps;
+
+      document.getElementById("res-hs-lengths").innerHTML =
+        makeRow("Minimum Routing Length (L_min / L_crit)", `${lMin_mm.toFixed(1)} mm (${toMil(lMin_mm).toFixed(0)} mil)`, `IPC-2141A §3.1 / ${ifaceStd}`, `L_crit = (t_r × v_p) / 6 = ${lCrit_mm.toFixed(2)} mm; Practical L_min = ${lMin_mm.toFixed(1)} mm`) +
+        makeRow(`Maximum Routing Length (L_max @ ${lossBudget_dB} dB)`, `${lMax_mm.toFixed(0)} mm (${toMil(lMax_mm).toFixed(0)} mil / ${(lMax_mm / 25.4).toFixed(1)} in)`, `${ifaceStd} Budget`, `f_Nyq = ${fNyq_GHz.toFixed(2)} GHz; Loss = ${(totalLoss * 1000).toFixed(1)} dB/m; L_max = Budget / Loss`) +
+        makeRow("Intra-Pair Length Matching Window (±ΔL)", `± ${maxDeltaL_mm.toFixed(2)} mm (± ${toMil(maxDeltaL_mm).toFixed(1)} mil)`, `IPC-2251 §3.4 / ${ifaceStd}`, `ΔL = t_skew × v_p = ${skew_ps} ps × ${vp_mm_ps.toFixed(3)} mm/ps = ${maxDeltaL_mm.toFixed(2)} mm`);
+    }
+
+    // =========================================================
+    // 4. A4 PDF REPORT EXPORT (PURE TECHNICAL DATA - NO ANIMATIONS)
+    // =========================================================
+    function exportA4PdfReport() {
+      syncStackup();
+      calcPowerAndThermal();
+      solveHighSpeed();
+
+      const now = new Date();
+      document.getElementById("pdf-timestamp").innerHTML =
+        `Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}<br>Ref: IPC-REPORT-2026-ENG`;
+
+      // SECTION 1: STACKUP
+      const layers = document.getElementById("stk-layers").value;
+      document.getElementById("pdf-params-stackup").textContent =
+        `Configuration: ${layers} Copper Layers | Outer Cu = ${activeCuOuterMm.toFixed(3)} mm (${toMil(activeCuOuterMm).toFixed(2)} mil) | Prepreg H = ${activePrepregMm.toFixed(3)} mm (${toMil(activePrepregMm).toFixed(2)} mil)`;
+      document.getElementById("pdf-res-stackup").innerHTML = document.getElementById("res-stackup").innerHTML;
+
+      // Static cross-section SVG (No animations)
+      document.getElementById("pdf-static-stackup").innerHTML = `
+        <svg width="220" height="90" viewBox="0 0 220 90">
+          <rect x="5" y="10" width="210" height="6" fill="#d1d5db" stroke="#000"/>
+          <rect x="5" y="16" width="210" height="12" fill="#000" stroke="#000"/>
+          <rect x="5" y="28" width="210" height="34" fill="#f8f9fa" stroke="#000"/>
+          <rect x="5" y="62" width="210" height="12" fill="#000" stroke="#000"/>
+          <rect x="5" y="74" width="210" height="6" fill="#d1d5db" stroke="#000"/>
+          <text x="15" y="25" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">L1 Top Cu (${toMil(activeCuOuterMm).toFixed(1)} mil)</text>
+          <text x="15" y="48" fill="#000" font-family="Consolas, monospace" font-size="8" font-weight="bold">Core Dielectric Substrate</text>
+          <text x="15" y="71" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">L_bot Bottom Cu</text>
+        </svg>
+      `;
+
+      // SECTION 2: CONVERTERS & THERMAL GRAPHS
+      document.getElementById("pdf-params-power").textContent =
+        `Power Architecture: PoL DC-DC Conversions (24V, 5V, 3.3V, 1.8V) + Mains 230V Safety Distances`;
+
+      let convTableHtml = `
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Stage</th><th>Conversion</th><th>Iout</th><th>η</th><th>Required W_out</th><th>Required W_in</th><th>Vdrop</th><th>ΔT</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      converterStages.forEach(c => {
+        const iOut = c.iout;
+        const eff = c.eff / 100.0;
+        const pIn = (c.vout * iOut) / eff;
+        const iIn = pIn / c.vin;
+        const areaOut_mil2 = Math.pow(iOut / (0.048 * Math.pow(c.dt, 0.44)), 1 / 0.725);
+        const wOut_mm = (areaOut_mil2 / toMil(activeCuOuterMm)) * 0.0254;
+        const areaIn_mil2 = Math.pow(iIn / (0.048 * Math.pow(c.dt, 0.44)), 1 / 0.725);
+        const wIn_mm = (areaIn_mil2 / toMil(activeCuOuterMm)) * 0.0254;
+        const R = (1.724e-5 * (1 + 0.00393 * c.dt) * c.len) / (wOut_mm * activeCuOuterMm);
+        convTableHtml += `
+          <tr>
+            <td><b>${c.name}</b></td>
+            <td>${c.vin}V → ${c.vout}V</td>
+            <td>${iOut.toFixed(1)} A</td>
+            <td>${c.eff}%</td>
+            <td><b>${wOut_mm.toFixed(2)} mm (${toMil(wOut_mm).toFixed(1)} mil)</b></td>
+            <td>${wIn_mm.toFixed(2)} mm (${toMil(wIn_mm).toFixed(1)} mil)</td>
+            <td>${(iOut * R * 1000).toFixed(1)} mV</td>
+            <td>+${c.dt} °C</td>
+          </tr>
+        `;
+      });
+      convTableHtml += `</tbody></table>`;
+      document.getElementById("pdf-table-converters").innerHTML = convTableHtml;
+
+      // Transfer graphs cleanly
+      document.getElementById("pdf-graph-temp-time").innerHTML =
+        `<div style="font-weight:700; font-size:7.5pt; margin-bottom:2px;">Transient Heating Curve T(t) vs. Time</div>` +
+        document.getElementById("chart-temp-time").innerHTML;
+
+      document.getElementById("pdf-graph-temp-current").innerHTML =
+        `<div style="font-weight:700; font-size:7.5pt; margin-bottom:2px;">IPC-2221B Non-Linear ΔT vs. Current (I)</div>` +
+        document.getElementById("chart-temp-current").innerHTML;
+
+      document.getElementById("pdf-res-clearance").innerHTML = document.getElementById("res-clearance").innerHTML;
+
+      // SECTION 3: HIGH SPEED
+      const ifaceSel = document.getElementById("hs-interface");
+      document.getElementById("pdf-params-hs").textContent =
+        `Standard: ${ifaceSel.options[ifaceSel.selectedIndex].text} | Prepreg H = ${activePrepregMm.toFixed(3)} mm | Cu T = ${activeCuOuterMm.toFixed(3)} mm`;
+      document.getElementById("pdf-res-hs").innerHTML =
+        document.getElementById("res-hs-geometry").innerHTML +
+        document.getElementById("res-hs-lengths").innerHTML;
+
+      // Static High-Speed Cross Section SVG
+      document.getElementById("pdf-static-hs").innerHTML = `
+        <svg width="220" height="90" viewBox="0 0 220 90">
+          <rect x="5" y="70" width="210" height="12" fill="#000"/>
+          <text x="45" y="80" fill="#fff" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">REFERENCE GND PLANE</text>
+          <rect x="5" y="30" width="210" height="40" fill="#f8f9fa" stroke="#000"/>
+          <rect x="40" y="20" width="40" height="10" fill="#000"/>
+          <rect x="110" y="20" width="40" height="10" fill="#000"/>
+          <text x="45" y="16" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">D+ (W)</text>
+          <text x="115" y="16" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">D- (W)</text>
+          <line x1="80" y1="25" x2="110" y2="25" stroke="#000" stroke-width="1.2"/>
+          <text x="88" y="21" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">S</text>
+        </svg>
+      `;
+
+      window.print();
+    }
+
+    // Startup initialization
+    renderConverterRows();
+    syncStackup();
+    applyInterfacePreset();
+  </script>
+</body>
+</html>
