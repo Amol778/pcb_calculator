@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PCB Design Standards & Power Conversion Workbench</title>
+  <title>PCB Engineering Standards, Material Library & Impedance Stackup Workbench</title>
   <style>
     :root {
       --bg: #ffffff;
@@ -25,7 +25,6 @@
       padding-bottom: 3rem;
     }
 
-    /* AUTHENTICATION OVERLAY */
     #login-overlay {
       position: fixed;
       inset: 0;
@@ -68,7 +67,6 @@
       margin-bottom: 1rem;
     }
 
-    /* NAVIGATION & HEADER */
     header {
       border-bottom: 2px solid #000;
       padding: 1rem 1.75rem;
@@ -83,7 +81,7 @@
       z-index: 100;
     }
     .brand h1 {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       text-transform: uppercase;
@@ -107,14 +105,13 @@
     .btn-pdf:hover { background: #222; }
 
     main {
-      max-width: 1340px;
+      max-width: 1360px;
       margin: 1.75rem auto;
       padding: 0 1.25rem;
     }
     .section-page { display: none; }
     .section-page.active { display: block; }
 
-    /* VISUAL BANNER */
     .visual-banner {
       border: 2px solid #000;
       background: var(--bg-soft);
@@ -140,7 +137,6 @@
       overflow: hidden;
     }
 
-    /* GRID & CARDS */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
@@ -175,7 +171,6 @@
       white-space: nowrap;
     }
 
-    /* INPUTS & LABELS */
     .input-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -212,7 +207,6 @@
       background: #f3f4f6;
     }
 
-    /* RESULT ITEM FORMATTING */
     .result-box {
       border: 1.5px solid #000;
       background: var(--bg-soft);
@@ -260,7 +254,6 @@
       word-break: break-all;
     }
 
-    /* TABLES */
     .data-table {
       width: 100%;
       border-collapse: collapse;
@@ -277,123 +270,32 @@
     .layer-cu { background: #e5e7eb; font-weight: 700; }
     .layer-diel { background: #ffffff; }
 
-    /* ANIMATIONS FOR WEB UI */
+    /* Web Animations */
     @keyframes dashFlow { to { stroke-dashoffset: -40; } }
-    @keyframes electronRun {
-      0% { transform: translateX(0px); }
-      50% { transform: translateX(65px); }
-      100% { transform: translateX(130px); }
-    }
-    @keyframes drillBounce {
-      0%, 100% { transform: translateY(-4px); }
-      50% { transform: translateY(4px); }
-    }
-    @keyframes raceCar {
-      0% { transform: translateX(0px); }
-      50% { transform: translateX(20px); }
-      100% { transform: translateX(0px); }
-    }
+    @keyframes drillBounce { 0%, 100% { transform: translateY(-4px); } 50% { transform: translateY(4px); } }
+    @keyframes raceCar { 0% { transform: translateX(0px); } 50% { transform: translateX(20px); } 100% { transform: translateX(0px); } }
     .anim-flow { stroke-dasharray: 8 6; animation: dashFlow 0.9s linear infinite; }
-    .anim-fast { stroke-dasharray: 6 4; animation: dashFlow 0.4s linear infinite; }
-    .cartoon-electron { animation: electronRun 1.5s linear infinite; }
     .cartoon-drill { animation: drillBounce 0.35s ease-in-out infinite; }
     .cartoon-racer { animation: raceCar 1.1s ease-in-out infinite; }
 
-    /* PRINT AND A4 REPORT STYLING */
+    /* Print / PDF Styling */
     #a4-pdf-report { display: none; }
-
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 8mm 10mm;
-      }
-      body {
-        background: #fff !important;
-        color: #000 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        font-size: 9pt;
-      }
-      #login-overlay, header, main {
-        display: none !important;
-      }
-      #a4-pdf-report {
-        display: block !important;
-        width: 100%;
-      }
-      .pdf-header {
-        border: 2px solid #000;
-        padding: 6px 10px;
-        margin-bottom: 8px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .pdf-header h1 {
-        font-size: 12pt;
-        text-transform: uppercase;
-        font-weight: 800;
-      }
-      .pdf-meta {
-        font-family: var(--mono);
-        font-size: 7.5pt;
-        text-align: right;
-      }
-      .pdf-sec {
-        border: 1.5px solid #000;
-        padding: 6px 8px;
-        margin-bottom: 8px;
-        page-break-inside: avoid;
-      }
-      .pdf-sec-title {
-        background: #000;
-        color: #fff;
-        font-weight: 800;
-        font-size: 8.5pt;
-        padding: 3px 6px;
-        text-transform: uppercase;
-        margin-bottom: 6px;
-        display: flex;
-        justify-content: space-between;
-      }
-      .pdf-param-line {
-        font-family: var(--mono);
-        font-size: 7.5pt;
-        margin-bottom: 5px;
-        padding: 3px 5px;
-        border: 1px solid #000;
-        background: #f8f9fa;
-      }
-      .pdf-row-grid {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 8px;
-        align-items: start;
-      }
-      .pdf-graph-box {
-        border: 1px solid #000;
-        padding: 4px;
-        background: #fff;
-        text-align: center;
-      }
-      .pdf-graph-box svg {
-        max-width: 100%;
-        height: auto;
-      }
-      .pdf-footer {
-        border-top: 1.5px solid #000;
-        padding-top: 4px;
-        margin-top: 6px;
-        display: flex;
-        justify-content: space-between;
-        font-family: var(--mono);
-        font-size: 7.5pt;
-      }
-      /* Ensure animations are suppressed in print output */
-      * {
-        animation: none !important;
-        stroke-dasharray: none !important;
-      }
+      @page { size: A4 portrait; margin: 8mm 10mm; }
+      body { background: #fff !important; color: #000 !important; font-size: 8.8pt; padding: 0 !important; }
+      #login-overlay, header, main { display: none !important; }
+      #a4-pdf-report { display: block !important; width: 100%; }
+      .pdf-header { border: 2px solid #000; padding: 6px 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+      .pdf-header h1 { font-size: 11.5pt; text-transform: uppercase; font-weight: 800; }
+      .pdf-meta { font-family: var(--mono); font-size: 7.5pt; text-align: right; }
+      .pdf-sec { border: 1.5px solid #000; padding: 6px 8px; margin-bottom: 6px; page-break-inside: avoid; }
+      .pdf-sec-title { background: #000; color: #fff; font-weight: 800; font-size: 8.5pt; padding: 3px 6px; text-transform: uppercase; margin-bottom: 5px; display: flex; justify-content: space-between; }
+      .pdf-param-line { font-family: var(--mono); font-size: 7.5pt; margin-bottom: 4px; padding: 3px 5px; border: 1px solid #000; background: #f8f9fa; }
+      .pdf-row-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 8px; align-items: start; }
+      .pdf-graph-box { border: 1px solid #000; padding: 4px; background: #fff; text-align: center; }
+      .pdf-graph-box svg { max-width: 100%; height: auto; }
+      .pdf-footer { border-top: 1.5px solid #000; padding-top: 4px; margin-top: 6px; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 7.5pt; }
+      * { animation: none !important; stroke-dasharray: none !important; }
     }
   </style>
 </head>
@@ -403,8 +305,8 @@
   <div id="login-overlay">
     <div class="login-card">
       <h2>PCB Engineering Login</h2>
-      <p>Enter your authorized Localhost credentials to unlock the IPC/IEC Design Workbench.</p>
-      <div id="login-err" class="login-err">Invalid Login ID or Password. Access Denied.</div>
+      <p>Enter authorized credentials to unlock the IPC/IEC Design Workbench.</p>
+      <div id="login-err" class="login-err">Invalid Credentials. Access Denied.</div>
       <div class="field" style="margin-bottom: 0.85rem;">
         <label>LOGIN ID</label>
         <input type="text" id="login-id" placeholder="Enter Login ID" autocomplete="off" autofocus />
@@ -422,13 +324,13 @@
   <!-- HEADER -->
   <header>
     <div class="brand">
-      <h1>IPC / IEC PCB Design Calculator (mm & mil)</h1>
-      <p>Multi-Rail DC-DC Power Stages • Transient Thermal Analysis • IPC-2221B / IEC 62368-1</p>
+      <h1>IPC / IEC PCB Engineering Workbench (mm & mil)</h1>
+      <p>Material Library • Thickness Synthesizer • Layer Transitions & Via Matching</p>
     </div>
     <div class="nav-tabs">
-      <button type="button" id="tabbtn-stackup" class="btn active" onclick="showSection('stackup')">1. Layer Stackup</button>
+      <button type="button" id="tabbtn-stackup" class="btn active" onclick="showSection('stackup')">1. Stackup & Material Library</button>
       <button type="button" id="tabbtn-power" class="btn" onclick="showSection('power')">2. Power, DC-DC & Thermal</button>
-      <button type="button" id="tabbtn-hs" class="btn" onclick="showSection('hs')">3. High-Speed Routing</button>
+      <button type="button" id="tabbtn-hs" class="btn" onclick="showSection('hs')">3. High-Speed Layer Allocation & Vias</button>
       <button type="button" class="btn btn-pdf" onclick="exportA4PdfReport()">📄 Export A4 PDF Report</button>
       <button type="button" class="btn" onclick="lockPortal()">Lock 🔒</button>
     </div>
@@ -436,12 +338,12 @@
 
   <main>
 
-    <!-- SECTION 1: LAYER STACKUP -->
+    <!-- SECTION 1: LAYER STACKUP & MATERIAL LIBRARY -->
     <section id="sec-stackup" class="section-page active">
       <div class="visual-banner">
         <div class="visual-info">
-          <h2>1. Layer Stackup & Substrate Configuration</h2>
-          <p>The copper thickness defined here dynamically propagates to the <b>Power Conversion</b> and <b>High-Speed Routing</b> engines to maintain single-source fabrication consistency.</p>
+          <h2>1. Substrate Material Selection & Stackup Engine</h2>
+          <p>Select your substrate material grade or leave it as standard FR-4. Choose between <b>Manual Layer Thickness</b> or <b>Target Total PCB Thickness</b> mode. All material and stackup properties automatically drive the thermal and high-speed calculations across the entire tool.</p>
         </div>
         <div class="svg-box" id="stackup-svg-holder"></div>
       </div>
@@ -449,41 +351,98 @@
       <div class="grid-2">
         <div class="card">
           <div class="card-title">
-            <h3>Stackup Parameters (mm & mil)</h3>
-            <span class="badge">IPC-4101 / IPC-2221B</span>
+            <h3>Substrate Material Specification</h3>
+            <span class="badge">IPC-4101 Standard Library</span>
           </div>
           <div class="input-grid">
+            <div class="field" style="grid-column: span 2;">
+              <label>PCB Substrate Material Grade</label>
+              <select id="mat-select" onchange="applyMaterialPreset()">
+                <option value="fr4_std" selected>Standard FR-4 (IPC-4101/21: Tg 135°C, Dk=4.4, Df=0.018, kth=0.25 W/mK)</option>
+                <option value="fr4_hightg">High-Tg FR-4 / IT-180A / IS400 (Tg 180°C, Dk=4.1, Df=0.014, kth=0.40 W/mK)</option>
+                <option value="mid_loss">Mid-Loss High-Speed / Nelco N4000-13 (Tg 200°C, Dk=3.7, Df=0.008, kth=0.35 W/mK)</option>
+                <option value="ultra_low">Ultra-Low Loss / Megtron 6 / Tachyon 100G (Tg 185°C, Dk=3.3, Df=0.002, kth=0.45 W/mK)</option>
+                <option value="polyimide">Polyimide / High-Temp Flex (IPC-4101/41: Tg 250°C, Dk=3.5, Df=0.008, kth=0.50 W/mK)</option>
+                <option value="rogers">Ceramic RF / Rogers RO4350B (Tg >280°C, Dk=3.66, Df=0.0037, kth=0.62 W/mK)</option>
+                <option value="ims_alu">Metal Core / Insulated Metal Substrate (Aluminium: kth=2.20 W/mK, Dk=4.8)</option>
+                <option value="custom">Custom Material (User-Defined Dk, Df, kth, Tg)</option>
+              </select>
+            </div>
             <div class="field">
-              <label>Copper Layer Count <span class="mil-live" id="lbl-stk-layers">4 Layers</span></label>
+              <label>Dielectric Constant (Dk / ε_r)</label>
+              <input type="number" id="mat-dk" value="4.40" step="0.05" oninput="syncStackup()" />
+            </div>
+            <div class="field">
+              <label>Loss Tangent (Df / tan δ)</label>
+              <input type="number" id="mat-df" value="0.018" step="0.001" oninput="syncStackup()" />
+            </div>
+            <div class="field">
+              <label>Thermal Conductivity (k_th) [W/m·K]</label>
+              <input type="number" id="mat-kth" value="0.25" step="0.02" oninput="syncStackup()" />
+            </div>
+            <div class="field">
+              <label>Glass Transition Temp (Tg) [°C]</label>
+              <input type="number" id="mat-tg" value="135" step="5" oninput="syncStackup()" />
+            </div>
+          </div>
+          <div class="result-box" id="res-material-impact"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <h3>Stackup Thickness Mode</h3>
+            <span class="badge">IPC-2221B / IPC-4101</span>
+          </div>
+          <div class="input-grid">
+            <div class="field" style="grid-column: span 2;">
+              <label>Stackup Sizing Method</label>
+              <select id="stk-mode-select" onchange="toggleStackupMode()">
+                <option value="target_total" selected>Target Overall PCB Thickness (Automatic Synthesis)</option>
+                <option value="manual_layers">Manual Entry (Specify Prepreg & Core Thicknesses)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Layer Count</label>
               <select id="stk-layers" onchange="syncStackup()">
                 <option value="2">2 Layers (Double-Sided)</option>
                 <option value="4" selected>4 Layers (Sig / GND / PWR / Sig)</option>
-                <option value="6">6 Layers (High-Speed Multi-Layer)</option>
-                <option value="8">8 Layers (Dense Routing + Planes)</option>
+                <option value="6">6 Layers (High-Density Multi-Layer)</option>
+                <option value="8">8 Layers (Controlled Impedance + Dual Ground)</option>
+              </select>
+            </div>
+            <div class="field" id="box-target-thick">
+              <label>Target Overall Thickness [mm] <span class="mil-live" id="lbl-target-thick">= 63.0 mil</span></label>
+              <select id="stk-target-val" onchange="syncStackup()">
+                <option value="0.8">0.80 mm (31.5 mil - Slim)</option>
+                <option value="1.0">1.00 mm (39.4 mil - Thin)</option>
+                <option value="1.2">1.20 mm (47.2 mil - Moderate)</option>
+                <option value="1.6" selected>1.60 mm (63.0 mil - Industry Standard)</option>
+                <option value="2.0">2.00 mm (78.7 mil - Thick / Backplane)</option>
+                <option value="2.4">2.40 mm (94.5 mil - Heavy Duty)</option>
               </select>
             </div>
             <div class="field">
               <label>Outer Copper Weight <span class="mil-live" id="lbl-stk-cu-out">= 1.38 mil</span></label>
               <select id="stk-cu-out" onchange="syncStackup()">
-                <option value="0.5">0.5 oz (0.0175 mm / 0.69 mil)</option>
-                <option value="1" selected>1.0 oz (0.035 mm / 1.38 mil)</option>
-                <option value="2">2.0 oz (0.070 mm / 2.76 mil)</option>
-                <option value="3">3.0 oz (0.105 mm / 4.13 mil)</option>
+                <option value="0.5">0.5 oz (17.5 µm / 0.69 mil)</option>
+                <option value="1" selected>1.0 oz (35 µm / 1.38 mil)</option>
+                <option value="2">2.0 oz (70 µm / 2.76 mil)</option>
+                <option value="3">3.0 oz (105 µm / 4.13 mil)</option>
               </select>
             </div>
             <div class="field">
               <label>Inner Copper Weight <span class="mil-live" id="lbl-stk-cu-in">= 1.38 mil</span></label>
               <select id="stk-cu-in" onchange="syncStackup()">
-                <option value="0.5">0.5 oz (0.0175 mm / 0.69 mil)</option>
-                <option value="1" selected>1.0 oz (0.035 mm / 1.38 mil)</option>
-                <option value="2">2.0 oz (0.070 mm / 2.76 mil)</option>
+                <option value="0.5">0.5 oz (17.5 µm / 0.69 mil)</option>
+                <option value="1" selected>1.0 oz (35 µm / 1.38 mil)</option>
+                <option value="2">2.0 oz (70 µm / 2.76 mil)</option>
               </select>
             </div>
-            <div class="field">
-              <label>Outer Prepreg Height (H) [mm] <span class="mil-live" id="lbl-stk-pp">= 5.91 mil</span></label>
+            <div class="field" id="box-manual-pp" style="display:none;">
+              <label>Prepreg Thickness (H) [mm] <span class="mil-live" id="lbl-stk-pp">= 5.91 mil</span></label>
               <input type="number" id="stk-pp" value="0.15" step="0.01" oninput="syncStackup()" />
             </div>
-            <div class="field">
+            <div class="field" id="box-manual-core" style="display:none;">
               <label>Core Thickness [mm] <span class="mil-live" id="lbl-stk-core">= 43.31 mil</span></label>
               <input type="number" id="stk-core" value="1.10" step="0.05" oninput="syncStackup()" />
             </div>
@@ -494,57 +453,52 @@
           </div>
           <div class="result-box" id="res-stackup"></div>
         </div>
+      </div>
 
-        <div class="card">
-          <div class="card-title">
-            <h3>Layer-by-Layer Breakdown (mm & mil)</h3>
-            <span class="badge">IPC-2221B §5.3</span>
-          </div>
-          <div id="stackup-table-holder"></div>
+      <div class="card">
+        <div class="card-title">
+          <h3>Layer-by-Layer Cross-Section Breakdown (mm & mil)</h3>
+          <span class="badge">IPC-2221B §5.3 / Manufacturing Stack</span>
         </div>
+        <div id="stackup-table-holder"></div>
       </div>
     </section>
 
-    <!-- SECTION 2: POWER, DC-DC CONVERSION & THERMAL -->
+    <!-- SECTION 2: POWER, DC-DC & THERMAL -->
     <section id="sec-power" class="section-page">
       <div class="visual-banner">
         <div class="visual-info">
-          <h2>2. Power Delivery & Thermal Analysis</h2>
-          <p>Calculates required trace widths, voltage drops, and transient temperature trajectories for high-voltage mains (230 V) down through distributed point-of-load (PoL) converters (24 V, 5 V, 3.3 V, 1.8 V).</p>
+          <h2>2. Power Architecture, Multi-Rail Conversion & Thermal Dynamics</h2>
+          <p>Thermal resistance ($R_{\text{th}}$) and maximum safe temperature rise are dynamically scaled using your selected <b>Substrate Material ($k_{\text{th}}$, $T_g$)</b> and <b>Copper Weight</b> from the Stackup section.</p>
         </div>
-        <div class="svg-box" id="power-banner-holder">
+        <div class="svg-box">
           <svg width="480" height="135" viewBox="0 0 480 135">
             <rect x="12" y="85" width="456" height="38" fill="#f3f4f6" stroke="#000" stroke-width="2"/>
-            <text x="20" y="108" font-family="Consolas, monospace" font-size="10" font-weight="bold">FR-4 SUBSTRATE (Thermal Dissipation Plane)</text>
+            <text x="20" y="108" font-family="Consolas, monospace" font-size="10" font-weight="bold" id="svg-power-mat-label">SUBSTRATE (k_th = 0.25 W/mK)</text>
             <polygon points="20,85 32,50 200,50 212,85" fill="#fff" stroke="#000" stroke-width="2"/>
-            <text x="32" y="42" font-family="Consolas, monospace" font-size="9.5" font-weight="bold">COPPER TRACE (Stackup Cu Weight)</text>
-            <g class="cartoon-electron">
-              <circle cx="45" cy="68" r="9" fill="#000"/>
-              <text x="41" y="72" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">e⁻</text>
-            </g>
+            <text x="32" y="42" font-family="Consolas, monospace" font-size="9.5" font-weight="bold">COPPER BUS TRACE (Linked Thickness)</text>
             <line x1="212" y1="83" x2="285" y2="83" stroke="#000" stroke-width="2" class="anim-flow"/>
-            <text x="218" y="97" font-family="Consolas, monospace" font-size="9" font-weight="bold">Creepage Gap</text>
+            <text x="220" y="97" font-family="Consolas, monospace" font-size="9" font-weight="bold">Creepage Gap</text>
             <polygon points="285,85 295,50 455,50 465,85" fill="#fff" stroke="#000" stroke-width="2"/>
             <text x="300" y="72" font-family="Consolas, monospace" font-size="10" font-weight="bold">HV NODE (230 Vrms / 325 Vpk)</text>
           </svg>
         </div>
       </div>
 
-      <!-- MULTI-RAIL DC-DC CONVERTER SECTION -->
       <div class="card">
         <div class="card-title">
-          <h3>Point-of-Load DC-DC Power Conversion Rails (24V, 5V, 3.3V, 1.8V)</h3>
+          <h3>Multi-Rail Point-of-Load DC-DC Power Conversion Table</h3>
           <span class="badge">IPC-2221B & Energy Balance</span>
         </div>
         <p style="font-size:0.83rem; color:var(--muted);">
-          Each conversion stage computes input current $I_{\text{in}} = (V_{\text{out}} \cdot I_{\text{out}}) / (\eta \cdot V_{\text{in}})$, sizing traces for both input and output rails using the copper thickness configured in the Layer Stackup section.
+          Calculates trace widths and voltage drops for cascaded rails (e.g. 24V $\rightarrow$ 5V $\rightarrow$ 3.3V $\rightarrow$ 1.8V). Copper thickness is dynamically linked to your stackup layer selection.
         </p>
 
         <div style="overflow-x:auto;">
           <table class="data-table" id="converter-table">
             <thead>
               <tr>
-                <th>Conversion Stage</th>
+                <th>Stage Name</th>
                 <th>Vin [V]</th>
                 <th>Vout [V]</th>
                 <th>Iout [A]</th>
@@ -554,33 +508,29 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody id="converter-tbody">
-              <!-- Dynamically populated rows -->
-            </tbody>
+            <tbody id="converter-tbody"></tbody>
           </table>
         </div>
-        <div style="display:flex; gap:0.5rem; margin-top:0.4rem;">
-          <button type="button" class="btn" onclick="addConverterRow('Custom', 24, 5, 3.0, 90, 50, 15)">+ Add Custom Conversion Stage</button>
-          <button type="button" class="btn" onclick="resetDefaultConverters()">Reset Standard Converter Cascade (24V→5V→3.3V→1.8V)</button>
+        <div style="display:flex; gap:0.5rem; margin-top:0.4rem; flex-wrap:wrap;">
+          <button type="button" class="btn" onclick="addConverterRow('Custom PoL', 24, 5, 3.0, 90, 50, 15)">+ Add Custom Conversion Stage</button>
+          <button type="button" class="btn" onclick="resetDefaultConverters()">Reset Standard Cascaded Rails (24V→5V→3.3V→1.8V)</button>
         </div>
-
         <div class="result-box" id="res-converter-rails" style="margin-top:0.6rem;"></div>
       </div>
 
       <div class="grid-2">
-        <!-- MAINS 230V CLEARANCE & CREEPAGE -->
         <div class="card">
           <div class="card-title">
-            <h3>Mains 230 Vrms Safety Clearances & Creepage</h3>
+            <h3>Mains 230 Vrms Safety Clearance & Creepage</h3>
             <span class="badge">IPC-2221B Tbl 6-1 & IEC 62368-1</span>
           </div>
           <div class="input-grid">
             <div class="field">
-              <label>Peak Working Voltage [V_pk] <span class="mil-live" id="lbl-cl-vpk">325 V</span></label>
+              <label>Peak Working Voltage [V_pk]</label>
               <input type="number" id="cl-vpk" value="325" step="10" oninput="calcPowerAndThermal()" />
             </div>
             <div class="field">
-              <label>RMS Working Voltage [V_rms] <span class="mil-live" id="lbl-cl-vrms">230 V</span></label>
+              <label>RMS Working Voltage [V_rms]</label>
               <input type="number" id="cl-vrms" value="230" step="10" oninput="calcPowerAndThermal()" />
             </div>
             <div class="field">
@@ -603,11 +553,10 @@
           <div class="result-box" id="res-clearance"></div>
         </div>
 
-        <!-- THERMAL SIMULATION CONTROL -->
         <div class="card">
           <div class="card-title">
-            <h3>Transient Thermal Parameters</h3>
-            <span class="badge">Fourier Conduction / IPC-2152</span>
+            <h3>Substrate Thermal Model Parameters</h3>
+            <span class="badge">Linked to IPC-4101 Material</span>
           </div>
           <div class="input-grid">
             <div class="field">
@@ -615,37 +564,29 @@
               <input type="number" id="th-amb" value="25" step="1" oninput="calcPowerAndThermal()" />
             </div>
             <div class="field">
-              <label>Trace Thermal Capacitance Factor [J/°C]</label>
-              <input type="number" id="th-cap" value="0.85" step="0.05" oninput="calcPowerAndThermal()" />
-            </div>
-            <div class="field">
-              <label>Substrate Dissipation Factor (R_th) [°C/W]</label>
+              <label>Substrate Dissipation R_th [°C/W]</label>
               <input type="number" id="th-rth" value="28" step="1" oninput="calcPowerAndThermal()" />
             </div>
-            <div class="field">
-              <label>Inspection Rail for Graphs</label>
-              <select id="th-rail-select" onchange="renderThermalCharts()">
-                <!-- Populated dynamically from converters -->
-              </select>
+            <div class="field" style="grid-column: span 2;">
+              <label>Rail Monitored on Thermal Charts</label>
+              <select id="th-rail-select" onchange="renderThermalCharts()"></select>
             </div>
           </div>
           <div class="result-box" id="res-thermal-summary"></div>
         </div>
       </div>
 
-      <!-- THERMAL PLOTS -->
       <div class="grid-2">
         <div class="card">
           <div class="card-title">
-            <h3>Graph 1: Transient Temperature Rise vs. Time [T(t)]</h3>
+            <h3>Graph 1: Transient Thermal Response vs. Time [T(t)]</h3>
             <span class="badge">Thermal RC Model</span>
           </div>
           <div id="chart-temp-time" style="background:#fff; border:1px solid #000; padding:10px;"></div>
         </div>
-
         <div class="card">
           <div class="card-title">
-            <h3>Graph 2: Temperature Rise vs. Operating Current [ΔT vs. I]</h3>
+            <h3>Graph 2: Temperature Rise vs. Load Current [ΔT vs. I]</h3>
             <span class="badge">IPC-2221B Non-Linear Curve</span>
           </div>
           <div id="chart-temp-current" style="background:#fff; border:1px solid #000; padding:10px;"></div>
@@ -653,30 +594,34 @@
       </div>
     </section>
 
-    <!-- SECTION 3: HIGH-SPEED ROUTING -->
+    <!-- SECTION 3: HIGH-SPEED ROUTING, LAYER ALLOCATION & VIAS -->
     <section id="sec-hs" class="section-page">
       <div class="visual-banner">
         <div class="visual-info">
-          <h2>3. High-Speed Synthesis & Length Constraints</h2>
-          <p>Synthesizes differential pair trace widths ($W$), spacing ($S$), single-ended reference widths ($W_{\text{se}}$), and allowable routing lengths based on targeted protocol loss budgets.</p>
+          <h2>3. High-Speed Layer Allocation, Layer Transitions & Via Matching</h2>
+          <p>Traces routed on <b>Layer 1 (Outer Microstrip)</b> require different widths than <b>Layer 3 (Inner Stripline)</b> to maintain target impedance. When routing from one layer to another, return-current ground vias and antipad tuning prevent high-frequency signal reflections.</p>
         </div>
-        <div class="svg-box" id="hs-svg-holder">
+        <div class="svg-box">
           <svg width="480" height="135" viewBox="0 0 480 135">
-            <rect x="15" y="105" width="450" height="16" fill="#000"/>
-            <text x="135" y="117" fill="#fff" font-family="Consolas, monospace" font-size="10" font-weight="bold">CONTINUOUS GND REFERENCE PLANE</text>
-            <rect x="15" y="58" width="450" height="47" fill="#f8f9fa" stroke="#000" stroke-width="1.5"/>
-            <rect x="130" y="44" width="75" height="14" fill="#000"/>
-            <text x="125" y="38" font-family="Consolas, monospace" font-size="9" font-weight="bold" id="svg-lbl-w">W = -- mm</text>
-            <rect x="265" y="44" width="75" height="14" fill="#000"/>
-            <text x="270" y="38" font-family="Consolas, monospace" font-size="9" font-weight="bold">D- Track</text>
-            <g class="cartoon-racer">
-              <rect x="142" y="18" width="34" height="12" fill="#000"/>
-              <text x="148" y="27" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">D+</text>
-              <rect x="277" y="18" width="34" height="12" fill="#000"/>
-              <text x="283" y="27" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">D-</text>
-              <line x1="176" y1="24" x2="277" y2="24" stroke="#000" stroke-width="1.5" stroke-dasharray="3 3"/>
-              <text x="195" y="15" font-family="Consolas, monospace" font-size="9" font-weight="bold" id="svg-lbl-s">S = -- mm</text>
-            </g>
+            <!-- Microstrip L1 -->
+            <rect x="20" y="24" width="50" height="10" fill="#000"/>
+            <text x="22" y="18" font-family="Consolas, monospace" font-size="8.5" font-weight="bold">L1 Top Signal</text>
+            <!-- L2 Ground -->
+            <rect x="10" y="44" width="460" height="8" fill="#555"/>
+            <text x="15" y="51" fill="#fff" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">L2 CONTINUOUS GROUND REFERENCE PLANE</text>
+            <!-- Stripline L3 -->
+            <rect x="130" y="70" width="45" height="10" fill="#000"/>
+            <text x="130" y="94" font-family="Consolas, monospace" font-size="8.5" font-weight="bold">L3 Stripline</text>
+            <!-- L4 Ground / Power -->
+            <rect x="10" y="106" width="460" height="8" fill="#555"/>
+            <text x="15" y="113" fill="#fff" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">L4 GROUND / POWER REFERENCE PLANE</text>
+            <!-- Transition Via -->
+            <rect x="70" y="24" width="12" height="56" fill="#fff" stroke="#000" stroke-width="2"/>
+            <line x1="76" y1="24" x2="76" y2="80" stroke="#000" stroke-width="2" class="anim-flow"/>
+            <text x="88" y="36" font-family="Consolas, monospace" font-size="8" font-weight="bold">Signal Via</text>
+            <!-- Return Path Via -->
+            <rect x="220" y="44" width="12" height="70" fill="#000"/>
+            <text x="236" y="65" font-family="Consolas, monospace" font-size="8" font-weight="bold">GND Stitching Via (Return Path)</text>
           </svg>
         </div>
       </div>
@@ -684,12 +629,12 @@
       <div class="grid-2">
         <div class="card">
           <div class="card-title">
-            <h3>Protocol & Target Impedance Solver</h3>
+            <h3>Protocol & Routing Layer Selection</h3>
             <span class="badge">IPC-2141A Synthesis</span>
           </div>
           <div class="input-grid">
             <div class="field" style="grid-column: span 2;">
-              <label>High-Speed Line Interface Standard</label>
+              <label>High-Speed Interface Protocol</label>
               <select id="hs-interface" onchange="applyInterfacePreset()">
                 <option value="mipi" selected>MIPI D-PHY (CSI-2 / DSI) — 100Ω Diff / 2.5 Gbps</option>
                 <option value="usb2">USB 2.0 High-Speed — 90Ω Diff / 480 Mbps</option>
@@ -699,22 +644,15 @@
                 <option value="pcie">PCIe Gen 3 / Gen 4 — 85Ω Diff / 16 Gbps</option>
                 <option value="hdmi">HDMI 2.0 / 2.1 TMDS — 100Ω Diff / 12 Gbps</option>
                 <option value="ddr">DDR4 / DDR5 Data & Strobe — 40Ω SE / 80Ω Diff</option>
-                <option value="custom">Custom User Specification</option>
+                <option value="custom">Custom High-Speed Specification</option>
               </select>
             </div>
             <div class="field">
-              <label>Target Diff (Z_diff) [Ω] <span class="mil-live">±10% Tol</span></label>
-              <input type="number" id="hs-zdiff-target" value="100" step="1" oninput="solveHighSpeed()" />
-            </div>
-            <div class="field">
-              <label>Target SE (Z₀) [Ω] <span class="mil-live">±10% Tol</span></label>
-              <input type="number" id="hs-z0-target" value="50" step="1" oninput="solveHighSpeed()" />
-            </div>
-            <div class="field">
-              <label>Routing Layer Geometry</label>
-              <select id="hs-mode" onchange="solveHighSpeed()">
-                <option value="microstrip" selected>Surface Microstrip (Outer Layer)</option>
-                <option value="stripline">Symmetric Stripline (Inner Layer)</option>
+              <label>Routing Layer Placement</label>
+              <select id="hs-layer-select" onchange="solveHighSpeed()">
+                <option value="L1_Microstrip" selected>Layer 1 (Top Microstrip - L2 GND Ref)</option>
+                <option value="L3_Stripline">Layer 3 (Inner Stripline - L2/L4 Dual Ref)</option>
+                <option value="L_bot_Microstrip">Bottom Layer (Microstrip - Ref Plane)</option>
               </select>
             </div>
             <div class="field">
@@ -727,12 +665,12 @@
               </select>
             </div>
             <div class="field">
-              <label>Dielectric Constant (ε_r / Dk)</label>
-              <input type="number" id="hs-er" value="4.2" step="0.05" oninput="solveHighSpeed()" />
+              <label>Target Diff (Z_diff) [Ω]</label>
+              <input type="number" id="hs-zdiff-target" value="100" step="1" oninput="solveHighSpeed()" />
             </div>
             <div class="field">
-              <label>Loss Tangent (tan δ / Df)</label>
-              <input type="number" id="hs-df" value="0.018" step="0.002" oninput="solveHighSpeed()" />
+              <label>Target Single-Ended (Z₀) [Ω]</label>
+              <input type="number" id="hs-z0-target" value="50" step="1" oninput="solveHighSpeed()" />
             </div>
           </div>
           <div class="result-box" id="res-hs-geometry"></div>
@@ -740,8 +678,8 @@
 
         <div class="card">
           <div class="card-title">
-            <h3>Routing Length & Skew Matching Windows</h3>
-            <span class="badge">IPC-2251 / Line Specs</span>
+            <h3>Routing Length Limits & Skew Budget</h3>
+            <span class="badge">Insertion Loss & Timing</span>
           </div>
           <div class="input-grid">
             <div class="field">
@@ -753,16 +691,49 @@
               <input type="number" id="hs-tr" value="120" step="10" oninput="solveHighSpeed()" />
             </div>
             <div class="field">
-              <label>Max Allowed Intra-Pair Skew [ps]</label>
+              <label>Max Allowed Skew [ps]</label>
               <input type="number" id="hs-skew" value="10" step="1" oninput="solveHighSpeed()" />
             </div>
             <div class="field">
-              <label>Max Channel Loss Budget [dB]</label>
+              <label>Max Loss Budget [dB]</label>
               <input type="number" id="hs-loss-budget" value="6.0" step="0.5" oninput="solveHighSpeed()" />
             </div>
           </div>
           <div class="result-box" id="res-hs-lengths"></div>
         </div>
+      </div>
+
+      <!-- INTER-LAYER SIGNAL TRANSITION & VIA IMPEDANCE MATCHING CARD -->
+      <div class="card">
+        <div class="card-title">
+          <h3>Inter-Layer Signal Transition & Return-Path Ground Via Design</h3>
+          <span class="badge">IPC-2141A §3.3 / High-Speed Layout Standard</span>
+        </div>
+        <p style="font-size:0.83rem; color:var(--muted);">
+          When differential pairs jump from an outer layer (e.g. L1 Microstrip) to an inner layer (e.g. L3 Stripline), the via barrel introduces parasitic capacitance ($C_{\text{via}}$) and inductance ($L_{\text{via}}$). To maintain continuous impedance and prevent ground bounce, place a <b>GND Stitching Via</b> immediately alongside the signal transition.
+        </p>
+        <div class="input-grid">
+          <div class="field">
+            <label>Signal Via Drill Hole (D) [mm] <span class="mil-live" id="lbl-via-drill">= 10.0 mil</span></label>
+            <input type="number" id="tr-via-drill" value="0.25" step="0.05" oninput="solveViaTransition()" />
+          </div>
+          <div class="field">
+            <label>Via Pad Diameter (D_pad) [mm] <span class="mil-live" id="lbl-via-pad">= 18.0 mil</span></label>
+            <input type="number" id="tr-via-pad" value="0.45" step="0.05" oninput="solveViaTransition()" />
+          </div>
+          <div class="field">
+            <label>Plane Anti-Pad Diameter (D_anti) [mm] <span class="mil-live" id="lbl-via-anti">= 26.0 mil</span></label>
+            <input type="number" id="tr-via-anti" value="0.65" step="0.05" oninput="solveViaTransition()" />
+          </div>
+          <div class="field">
+            <label>Layer Transition Depth (h_via) [mm]</label>
+            <select id="tr-via-depth" onchange="solveViaTransition()">
+              <option value="through" selected>Through-Hole Via (Full Board Thickness)</option>
+              <option value="blind_l1_l3">Blind / Buried Via (L1 to L3 Transition)</option>
+            </select>
+          </div>
+        </div>
+        <div class="result-box" id="res-via-transition" style="margin-top:0.6rem;"></div>
       </div>
     </section>
 
@@ -778,10 +749,9 @@
       <div class="pdf-meta" id="pdf-timestamp"></div>
     </div>
 
-    <!-- SECTION 1 REPORT -->
     <div class="pdf-sec">
       <div class="pdf-sec-title">
-        <span>Section 1: PCB Layer Stackup (Linked to Power & Signal Traces)</span>
+        <span>Section 1: Substrate Material & Synthesized Layer Stackup</span>
         <span>[IPC-4101 / IPC-2221B §5.3]</span>
       </div>
       <div class="pdf-param-line" id="pdf-params-stackup"></div>
@@ -791,7 +761,6 @@
       </div>
     </div>
 
-    <!-- SECTION 2 REPORT -->
     <div class="pdf-sec">
       <div class="pdf-sec-title">
         <span>Section 2: Multi-Rail DC-DC Stages, Mains 230V Safety & Thermal Performance</span>
@@ -806,16 +775,15 @@
       <div id="pdf-res-clearance" style="margin-top:6px;"></div>
     </div>
 
-    <!-- SECTION 3 REPORT -->
     <div class="pdf-sec">
       <div class="pdf-sec-title">
-        <span>Section 3: High-Speed Interface Widths, Spacing & Max Routing Lengths</span>
+        <span>Section 3: High-Speed Layer Allocation, Layer Transitions & Via Matching</span>
         <span>[IPC-2141A & IPC-2251]</span>
       </div>
       <div class="pdf-param-line" id="pdf-params-hs"></div>
       <div class="pdf-row-grid">
         <div id="pdf-res-hs"></div>
-        <div class="pdf-graph-box" id="pdf-static-hs"></div>
+        <div id="pdf-res-via-transition"></div>
       </div>
     </div>
 
@@ -828,7 +796,7 @@
 
   <script>
     // =========================================================
-    // SYSTEM AUTHENTICATION & ACCESS
+    // SYSTEM AUTHENTICATION
     // =========================================================
     const USER_ID = "admin";
     const USER_PASS = "pcb2026";
@@ -878,99 +846,164 @@
     }
 
     // =========================================================
-    // 1. LAYER STACKUP ENGINE
+    // 1. MATERIAL PRESETS (IPC-4101 LIBRARY)
+    // =========================================================
+    const MATERIAL_LIBRARY = {
+      fr4_std:    { name: "Standard FR-4", dk: 4.40, df: 0.018, kth: 0.25, tg: 135, cti: 175, desc: "IPC-4101/21 Standard General Purpose Epoxy" },
+      fr4_hightg: { name: "High-Tg FR-4 (IT-180A/IS400)", dk: 4.10, df: 0.014, kth: 0.40, tg: 180, cti: 250, desc: "IPC-4101/26 Lead-Free Solder Compatible" },
+      mid_loss:   { name: "Mid-Loss (Nelco N4000-13)", dk: 3.70, df: 0.008, kth: 0.35, tg: 200, cti: 200, desc: "High-Speed Digital Backplanes & Servers" },
+      ultra_low:  { name: "Ultra-Low Loss (Megtron 6)", dk: 3.30, df: 0.002, kth: 0.45, tg: 185, cti: 175, desc: "10G–100G Ethernet, PCIe Gen4/5, Radar" },
+      polyimide:  { name: "Polyimide / Flex", dk: 3.50, df: 0.008, kth: 0.50, tg: 250, cti: 250, desc: "IPC-4101/41 Aerospace, Military, Rigid-Flex" },
+      rogers:     { name: "Ceramic / Rogers RO4350B", dk: 3.66, df: 0.0037, kth: 0.62, tg: 280, cti: 600, desc: "RF / Microwave up to 40 GHz" },
+      ims_alu:    { name: "Metal Core / IMS Aluminium", dk: 4.80, df: 0.020, kth: 2.20, tg: 130, cti: 600, desc: "High-Power LED & Automotive Motor Drivers" }
+    };
+
+    function applyMaterialPreset() {
+      const key = document.getElementById("mat-select").value;
+      if (key !== "custom" && MATERIAL_LIBRARY[key]) {
+        const m = MATERIAL_LIBRARY[key];
+        document.getElementById("mat-dk").value = m.dk.toFixed(2);
+        document.getElementById("mat-df").value = m.df.toFixed(4);
+        document.getElementById("mat-kth").value = m.kth.toFixed(2);
+        document.getElementById("mat-tg").value = m.tg;
+      }
+      syncStackup();
+    }
+
+    function toggleStackupMode() {
+      const mode = document.getElementById("stk-mode-select").value;
+      if (mode === "target_total") {
+        document.getElementById("box-target-thick").style.display = "block";
+        document.getElementById("box-manual-pp").style.display = "none";
+        document.getElementById("box-manual-core").style.display = "none";
+      } else {
+        document.getElementById("box-target-thick").style.display = "none";
+        document.getElementById("box-manual-pp").style.display = "block";
+        document.getElementById("box-manual-core").style.display = "block";
+      }
+      syncStackup();
+    }
+
+    // =========================================================
+    // 2. LAYER STACKUP & SYNTHESIS
     // =========================================================
     let activeCuOuterMm = 0.035;
     let activeCuInnerMm = 0.035;
     let activePrepregMm = 0.15;
+    let activeCoreMm = 1.10;
+    let activeTotalBoardMm = 1.60;
 
     function syncStackup() {
+      const matKey = document.getElementById("mat-select").value;
+      const Dk = parseFloat(document.getElementById("mat-dk").value) || 4.40;
+      const Df = parseFloat(document.getElementById("mat-df").value) || 0.018;
+      const kth = parseFloat(document.getElementById("mat-kth").value) || 0.25;
+      const Tg = parseFloat(document.getElementById("mat-tg").value) || 135;
+
       const N = parseInt(document.getElementById("stk-layers").value, 10) || 4;
       const cuOutOz = parseFloat(document.getElementById("stk-cu-out").value) || 1;
       const cuInOz = parseFloat(document.getElementById("stk-cu-in").value) || 1;
-      const pp = parseFloat(document.getElementById("stk-pp").value) || 0.15;
-      const core = parseFloat(document.getElementById("stk-core").value) || 1.10;
       const sm = parseFloat(document.getElementById("stk-sm").value) || 0.025;
 
       activeCuOuterMm = cuOutOz * 0.035;
       activeCuInnerMm = cuInOz * 0.035;
-      activePrepregMm = pp;
 
-      document.getElementById("lbl-stk-layers").textContent = `${N} Layers`;
+      const sizingMode = document.getElementById("stk-mode-select").value;
+
+      if (sizingMode === "target_total") {
+        const targetTotalMm = parseFloat(document.getElementById("stk-target-val").value) || 1.60;
+        document.getElementById("lbl-target-thick").textContent = `= ${toMil(targetTotalMm).toFixed(1)} mil`;
+
+        // Calculate total copper + soldermask thickness
+        const totalCuMm = 2 * activeCuOuterMm + (N - 2) * activeCuInnerMm;
+        const totalSmMm = 2 * sm;
+        const remainingDielectricMm = Math.max(0.2, targetTotalMm - totalCuMm - totalSmMm);
+
+        if (N === 2) {
+          activePrepregMm = 0;
+          activeCoreMm = remainingDielectricMm;
+        } else if (N === 4) {
+          // In standard 4L, outer prepreg is sized ~0.15-0.20 mm for 50Ω impedance, remainder is core
+          activePrepregMm = Math.min(0.25, Math.max(0.10, remainingDielectricMm * 0.18));
+          activeCoreMm = remainingDielectricMm - 2 * activePrepregMm;
+        } else if (N === 6) {
+          // 6L: 4 prepregs (L1-L2, L5-L6, etc.), 1 center core
+          activePrepregMm = Math.min(0.20, Math.max(0.10, remainingDielectricMm * 0.14));
+          activeCoreMm = remainingDielectricMm - 4 * activePrepregMm;
+        } else {
+          // 8L: symmetric multi-dielectrics
+          activePrepregMm = Math.min(0.15, Math.max(0.08, remainingDielectricMm * 0.12));
+          activeCoreMm = remainingDielectricMm - 6 * activePrepregMm;
+        }
+        activeTotalBoardMm = targetTotalMm;
+      } else {
+        activePrepregMm = parseFloat(document.getElementById("stk-pp").value) || 0.15;
+        activeCoreMm = parseFloat(document.getElementById("stk-core").value) || 1.10;
+        const dielTotal = (N === 2) ? activeCoreMm : (activeCoreMm + (N - 2) * activePrepregMm);
+        activeTotalBoardMm = 2 * sm + 2 * activeCuOuterMm + (N - 2) * activeCuInnerMm + dielTotal;
+      }
+
       document.getElementById("lbl-stk-cu-out").textContent = `= ${toMil(activeCuOuterMm).toFixed(2)} mil`;
       document.getElementById("lbl-stk-cu-in").textContent = `= ${toMil(activeCuInnerMm).toFixed(2)} mil`;
-      document.getElementById("lbl-stk-pp").textContent = `= ${toMil(pp).toFixed(2)} mil`;
-      document.getElementById("lbl-stk-core").textContent = `= ${toMil(core).toFixed(1)} mil`;
+      document.getElementById("lbl-stk-pp").textContent = `= ${toMil(activePrepregMm).toFixed(2)} mil`;
+      document.getElementById("lbl-stk-core").textContent = `= ${toMil(activeCoreMm).toFixed(1)} mil`;
       document.getElementById("lbl-stk-sm").textContent = `= ${toMil(sm).toFixed(2)} mil`;
 
+      // Material Impact Summary
+      const maxContinuousTemp = Tg - 25; // Continuous operating temperature derating per IPC-2221
+      document.getElementById("res-material-impact").innerHTML =
+        makeRow("Max Continuous Operating Temp", `${maxContinuousTemp}°C (Tg = ${Tg}°C)`, "IPC-2221B §4.1.2", `T_max_safe = Tg - 25°C = ${Tg}°C - 25°C = ${maxContinuousTemp}°C`) +
+        makeRow("Material Thermal Conductivity", `${kth.toFixed(2)} W/m·K`, "IPC-4101 Dielectric", `k_th = ${kth.toFixed(2)} W/m·K (Directly scales PCB heat spreading)`);
+
+      // Stackup Summary
+      document.getElementById("res-stackup").innerHTML =
+        makeRow("Total Synthesized PCB Thickness", `${activeTotalBoardMm.toFixed(3)} mm (${toMil(activeTotalBoardMm).toFixed(1)} mil)`, "IPC-2221B / IPC-4101", `T_total = 2·SM + ${N}·Cu + ΣDielectric = ${activeTotalBoardMm.toFixed(3)} mm`) +
+        makeRow("Outer Dielectric Spacing (H_outer)", `${activePrepregMm.toFixed(3)} mm (${toMil(activePrepregMm).toFixed(1)} mil)`, "Microstrip Height Reference", `Prepreg spacing between L1 signal and L2 ground reference plane`);
+
+      // Build Table
       let rows = [];
-      let totalMm = 2 * sm;
-      rows.push({ name: "Top Soldermask", type: "Mask", t: sm });
-      rows.push({ name: "L1 (Outer Top Cu)", type: "Copper", t: activeCuOuterMm });
-      totalMm += activeCuOuterMm;
+      rows.push({ name: "Top Soldermask", type: "Soldermask", t: sm });
+      rows.push({ name: "L1 — Top Signal / Microstrip", type: "Outer Copper", t: activeCuOuterMm });
 
       if (N === 2) {
-        rows.push({ name: "FR-4 Substrate Core", type: "Dielectric", t: core });
-        totalMm += core;
+        rows.push({ name: "Core Substrate Dielectric", type: "Dielectric Core", t: activeCoreMm });
       } else {
         const innerPairs = (N - 2) / 2;
         for (let i = 1; i <= innerPairs; i++) {
-          rows.push({ name: `Prepreg Dielectric ${i}`, type: "Dielectric", t: pp });
-          rows.push({ name: `L${i + 1} (Inner Plane Cu)`, type: "Copper", t: activeCuInnerMm });
-          totalMm += pp + activeCuInnerMm;
+          rows.push({ name: `Prepreg (Dielectric ${i})`, type: "Prepreg Dielectric", t: activePrepregMm });
+          rows.push({ name: `L${i + 1} — Inner Plane (GND / Ref)`, type: "Inner Copper", t: activeCuInnerMm });
         }
-        rows.push({ name: "Center FR-4 Core", type: "Dielectric", t: core });
-        totalMm += core;
+        rows.push({ name: "Center FR-4 Core Substrate", type: "Core Dielectric", t: activeCoreMm });
         for (let i = innerPairs; i >= 1; i--) {
           const lNum = N - i;
-          rows.push({ name: `L${lNum} (Inner Plane Cu)`, type: "Copper", t: activeCuInnerMm });
-          rows.push({ name: `Prepreg Dielectric`, type: "Dielectric", t: pp });
-          totalMm += pp + activeCuInnerMm;
+          rows.push({ name: `L${lNum} — Inner Plane (PWR / Sig)`, type: "Inner Copper", t: activeCuInnerMm });
+          rows.push({ name: `Prepreg (Dielectric)`, type: "Prepreg Dielectric", t: activePrepregMm });
         }
       }
+      rows.push({ name: `L${N} — Bottom Signal / Microstrip`, type: "Outer Copper", t: activeCuOuterMm });
+      rows.push({ name: "Bottom Soldermask", type: "Soldermask", t: sm });
 
-      rows.push({ name: `L${N} (Outer Bottom Cu)`, type: "Copper", t: activeCuOuterMm });
-      rows.push({ name: "Bottom Soldermask", type: "Mask", t: sm });
-      totalMm += activeCuOuterMm;
-
-      const totalMil = toMil(totalMm);
-
-      document.getElementById("res-stackup").innerHTML =
-        makeRow(
-          "Total Board Thickness",
-          `${totalMm.toFixed(3)} mm (${totalMil.toFixed(1)} mil)`,
-          "IPC-2221B §5.3 / IPC-4101",
-          `T_board = 2·SM + ${N}·Cu + ΣDielectric = ${totalMm.toFixed(3)} mm (${totalMil.toFixed(1)} mil)`
-        ) +
-        makeRow(
-          "Fab Tolerance Limit (±10%)",
-          `${(totalMm * 0.9).toFixed(2)} to ${(totalMm * 1.1).toFixed(2)} mm`,
-          "IPC-6012 Class 2",
-          `Tol = ${totalMm.toFixed(2)} mm ± ${(totalMm * 0.1).toFixed(2)} mm (±${(totalMil * 0.1).toFixed(1)} mil)`
-        );
-
-      let tbl = `<table class="data-table"><thead><tr><th>Layer Identifier</th><th>Material</th><th>Thickness [mm]</th><th>Thickness [mil]</th></tr></thead><tbody>`;
+      let tbl = `<table class="data-table"><thead><tr><th>Layer ID</th><th>Type</th><th>Thickness [mm]</th><th>Thickness [mil]</th><th>Standard Ref Role</th></tr></thead><tbody>`;
       rows.forEach(r => {
-        const cls = r.type === "Copper" ? "layer-cu" : "layer-diel";
-        tbl += `<tr class="${cls}"><td>${r.name}</td><td>${r.type}</td><td>${r.t.toFixed(3)} mm</td><td>${toMil(r.t).toFixed(2)} mil</td></tr>`;
+        const cls = r.type.includes("Copper") ? "layer-cu" : "layer-diel";
+        tbl += `<tr class="${cls}"><td><b>${r.name}</b></td><td>${r.type}</td><td>${r.t.toFixed(3)} mm</td><td>${toMil(r.t).toFixed(2)} mil</td><td>${r.type.includes("Outer") ? "Primary High-Speed Microstrip" : (r.type.includes("Inner Copper") ? "Continuous Ground/Power Reference" : "Isolation Substrate")}</td></tr>`;
       });
       tbl += `</tbody></table>`;
       document.getElementById("stackup-table-holder").innerHTML = tbl;
 
-      // Build interactive SVG
+      // Update Live SVG
       let svgY = 24;
       let svgRows = "";
       rows.forEach((r) => {
-        const h = r.type === "Copper" ? 11 : (r.type === "Mask" ? 6 : 18);
-        const fill = r.type === "Copper" ? "#111" : (r.type === "Mask" ? "#d1d5db" : "#fff");
-        const txtCol = r.type === "Copper" ? "#fff" : "#000";
+        const h = r.type.includes("Copper") ? 11 : (r.type.includes("Mask") ? 6 : 18);
+        const fill = r.type.includes("Copper") ? "#111" : (r.type.includes("Mask") ? "#d1d5db" : "#fff");
+        const txtCol = r.type.includes("Copper") ? "#fff" : "#000";
         svgRows += `<rect x="15" y="${svgY}" width="305" height="${h}" fill="${fill}" stroke="#000" stroke-width="1.2"/>`;
         if (h >= 11) {
-          svgRows += `<text x="22" y="${svgY + h - 3}" fill="${txtCol}" font-family="Consolas, monospace" font-size="8.5" font-weight="bold">${r.name}: ${r.t.toFixed(3)}mm (${toMil(r.t).toFixed(1)}mil)</text>`;
+          svgRows += `<text x="22" y="${svgY + h - 3}" fill="${txtCol}" font-family="Consolas, monospace" font-size="8.5" font-weight="bold">${r.name}: ${r.t.toFixed(3)}mm</text>`;
         }
         svgY += h;
       });
-
       svgRows += `<rect x="355" y="24" width="34" height="${svgY - 24}" fill="#fff" stroke="#000" stroke-width="2"/>`;
       svgRows += `<line x1="372" y1="24" x2="372" y2="${svgY}" stroke="#000" stroke-width="3" class="anim-flow"/>`;
       svgRows += `
@@ -981,17 +1014,16 @@
           <text x="394" y="18" font-family="Consolas, monospace" font-size="8.5" font-weight="bold">🤖 DRILL BOT</text>
         </g>
       `;
-      svgRows += `<text x="330" y="${svgY + 13}" font-family="Consolas, monospace" font-size="9" font-weight="bold">PTH VIA (${totalMil.toFixed(0)} mil)</text>`;
-
-      document.getElementById("stackup-svg-holder").innerHTML =
-        `<svg width="490" height="${svgY + 20}" viewBox="0 0 490 ${svgY + 20}">${svgRows}</svg>`;
+      svgRows += `<text x="330" y="${svgY + 13}" font-family="Consolas, monospace" font-size="9" font-weight="bold">TOTAL ${toMil(activeTotalBoardMm).toFixed(0)} mil</text>`;
+      document.getElementById("stackup-svg-holder").innerHTML = `<svg width="490" height="${svgY + 20}" viewBox="0 0 490 ${svgY + 20}">${svgRows}</svg>`;
 
       calcPowerAndThermal();
       solveHighSpeed();
+      solveViaTransition();
     }
 
     // =========================================================
-    // 2. POWER CONVERSION & TRANSIENT THERMAL ENGINE
+    // 3. POWER & THERMAL ENGINE
     // =========================================================
     let converterStages = [
       { name: "Stage 1 (Main Bus)", vin: 24, vout: 5, iout: 5.0, eff: 92, len: 70, dt: 15 },
@@ -1010,15 +1042,7 @@
     }
 
     function addConverterRow(name, vin, vout, iout, eff, len, dt) {
-      converterStages.push({
-        name: `${name} (${vin}V→${vout}V)`,
-        vin: vin,
-        vout: vout,
-        iout: iout,
-        eff: eff,
-        len: len,
-        dt: dt
-      });
+      converterStages.push({ name: `${name} (${vin}V→${vout}V)`, vin: vin, vout: vout, iout: iout, eff: eff, len: len, dt: dt });
       renderConverterRows();
       calcPowerAndThermal();
     }
@@ -1049,7 +1073,6 @@
         tbody.appendChild(tr);
       });
 
-      // Update selector for thermal graphs
       const sel = document.getElementById("th-rail-select");
       sel.innerHTML = "";
       converterStages.forEach((c, idx) => {
@@ -1066,14 +1089,11 @@
     }
 
     function calcPowerAndThermal() {
-      // IPC-2221B Copper Thickness link from stackup:
       const tCu_mm = activeCuOuterMm;
       const tCu_mil = toMil(tCu_mm);
-
       let html = "";
-      let pdfTableRows = "";
 
-      converterStages.forEach((c, idx) => {
+      converterStages.forEach((c) => {
         const iOut = Math.max(0.01, c.iout);
         const eff = Math.min(100, Math.max(10, c.eff)) / 100.0;
         const pOut = c.vout * iOut;
@@ -1082,7 +1102,6 @@
         const dT = Math.max(1, c.dt);
         const L_mm = Math.max(1, c.len);
 
-        // Required cross-section area in mil^2 (IPC-2221B external: k=0.048)
         const areaOut_mil2 = Math.pow(iOut / (0.048 * Math.pow(dT, 0.44)), 1 / 0.725);
         const wOut_mil = areaOut_mil2 / tCu_mil;
         const wOut_mm = wOut_mil * 0.0254;
@@ -1091,36 +1110,21 @@
         const wIn_mil = areaIn_mil2 / tCu_mil;
         const wIn_mm = wIn_mil * 0.0254;
 
-        // Trace resistance, voltage drop, and Joule power loss at operating temperature
         const R_out = (1.724e-5 * (1 + 0.00393 * dT) * L_mm) / (wOut_mm * tCu_mm);
         const vDrop_out = iOut * R_out;
-        const pLoss_out = iOut * iOut * R_out;
 
         html += makeRow(
-          `${c.name}: Output Rail (${c.vout} V @ ${iOut.toFixed(1)} A)`,
+          `${c.name}: Output Trace (${c.vout}V @ ${iOut.toFixed(1)}A)`,
           `${wOut_mm.toFixed(3)} mm (${wOut_mil.toFixed(1)} mil)`,
           "IPC-2221B §6.2",
-          `A = (${iOut}/(0.048·${dT}^0.44))^1.379 = ${areaOut_mil2.toFixed(1)} mil²; W_out = A / ${tCu_mil.toFixed(2)} mil; V_drop = ${(vDrop_out * 1000).toFixed(1)} mV; P_loss = ${(pLoss_out * 1000).toFixed(1)} mW`
+          `A = (${iOut}/(0.048·${dT}^0.44))^1.379 = ${areaOut_mil2.toFixed(1)} mil²; W_out = A / ${tCu_mil.toFixed(2)} mil; V_drop = ${(vDrop_out * 1000).toFixed(1)} mV`
         );
         html += makeRow(
-          `${c.name}: Input Trace (${c.vin} V @ I_in = ${iIn.toFixed(2)} A, η = ${(eff * 100).toFixed(0)}%)`,
+          `${c.name}: Input Trace (${c.vin}V @ I_in = ${iIn.toFixed(2)}A)`,
           `${wIn_mm.toFixed(3)} mm (${wIn_mil.toFixed(1)} mil)`,
           "Energy Conservation & IPC-2221B",
-          `P_in = ${pOut.toFixed(1)}W / ${eff} = ${pIn.toFixed(1)}W; I_in = ${pIn.toFixed(1)}W / ${c.vin}V = ${iIn.toFixed(2)}A; W_in = ${wIn_mm.toFixed(3)} mm (${wIn_mil.toFixed(1)} mil)`
+          `P_in = ${pOut.toFixed(1)}W / ${eff} = ${pIn.toFixed(1)}W; I_in = ${pIn.toFixed(1)}W / ${c.vin}V = ${iIn.toFixed(2)}A; W_in = ${wIn_mm.toFixed(3)} mm`
         );
-
-        pdfTableRows += `
-          <tr>
-            <td><b>${c.name}</b></td>
-            <td>${c.vin} V → ${c.vout} V</td>
-            <td>${iOut.toFixed(1)} A</td>
-            <td>${(eff * 100).toFixed(0)} %</td>
-            <td><b>${wOut_mm.toFixed(2)} mm (${wOut_mil.toFixed(1)} mil)</b></td>
-            <td>${wIn_mm.toFixed(2)} mm (${wIn_mil.toFixed(1)} mil)</td>
-            <td>${(vDrop_out * 1000).toFixed(1)} mV</td>
-            <td>+${dT} °C</td>
-          </tr>
-        `;
       });
 
       document.getElementById("res-converter-rails").innerHTML = html;
@@ -1130,9 +1134,6 @@
       const Vrms = Math.max(0, parseFloat(document.getElementById("cl-vrms").value) || 230);
       const type = document.getElementById("cl-type").value;
       const ins = parseFloat(document.getElementById("cl-ins").value) || 2;
-
-      document.getElementById("lbl-cl-vpk").textContent = `${Vpk} V_pk`;
-      document.getElementById("lbl-cl-vrms").textContent = `${Vrms} V_rms`;
 
       let ipcClearMm = 0, ipcForm = "";
       if (type === "B1") {
@@ -1160,29 +1161,28 @@
       renderThermalCharts();
     }
 
-    // =========================================================
-    // TRANSIENT THERMAL GRAPHS (TIME & CURRENT DOMAIN)
-    // =========================================================
     function renderThermalCharts() {
       const idx = parseInt(document.getElementById("th-rail-select").value, 10) || 0;
       const c = converterStages[idx] || converterStages[0];
       const T_amb = parseFloat(document.getElementById("th-amb").value) || 25;
-      const C_th = parseFloat(document.getElementById("th-cap").value) || 0.85; // J/°C
-      const R_th = parseFloat(document.getElementById("th-rth").value) || 28;  // °C/W
+      const kth = parseFloat(document.getElementById("mat-kth").value) || 0.25;
 
-      const tau = Math.max(1, R_th * C_th); // Thermal time constant in seconds
+      // Thermal resistance scaled by substrate thermal conductivity
+      const baseRth = parseFloat(document.getElementById("th-rth").value) || 28;
+      const R_th = baseRth * (0.25 / kth); // Better thermal conductivity reduces Rth
+      const C_th = 0.85;
+
+      const tau = Math.max(1, R_th * C_th);
       const dT_steady = Math.max(1, c.dt);
       const T_max = T_amb + dT_steady;
 
       document.getElementById("res-thermal-summary").innerHTML =
         makeRow("Selected Rail for Thermal Inspection", `${c.name} (${c.vout}V @ ${c.iout}A)`, "Inspection State", `Operating Load = ${c.iout} A; Steady-State ΔT = +${dT_steady}°C`) +
-        makeRow("Thermal Time Constant (τ)", `${tau.toFixed(1)} Seconds`, "First-Order Thermal RC", `τ = R_th × C_th = ${R_th}°C/W × ${C_th} J/°C = ${tau.toFixed(1)} s; Settles in 5τ (${(5 * tau).toFixed(0)} s)`);
+        makeRow("Substrate Scaled Time Constant (τ)", `${tau.toFixed(1)} Seconds`, "First-Order Thermal RC", `τ = R_th(${R_th.toFixed(1)}°C/W) × C_th = ${tau.toFixed(1)} s (Scaled by material k_th = ${kth} W/mK)`);
 
-      // 1. Chart 1: Temperature vs Time (SVG)
+      // SVG Chart 1
       const wSvg = 460, hSvg = 180, padL = 45, padB = 30, padT = 20, padR = 20;
-      const plotW = wSvg - padL - padR;
-      const plotH = hSvg - padB - padT;
-
+      const plotW = wSvg - padL - padR, plotH = hSvg - padB - padT;
       const totalTime = Math.ceil(5 * tau);
       let pathD1 = "";
       for (let s = 0; s <= 50; s++) {
@@ -1193,7 +1193,7 @@
         pathD1 += (s === 0 ? "M " : "L ") + `${x.toFixed(1)} ${y.toFixed(1)} `;
       }
 
-      const svgChart1 = `
+      document.getElementById("chart-temp-time").innerHTML = `
         <svg width="${wSvg}" height="${hSvg}" viewBox="0 0 ${wSvg} ${hSvg}">
           <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
           <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
@@ -1202,18 +1202,15 @@
           <text x="${padL + plotW - 35}" y="${padT + plotH + 18}" font-family="Consolas, monospace" font-size="9" font-weight="bold">${totalTime}s (5τ)</text>
           <text x="${padL + 10}" y="${padT + plotH + 18}" font-family="Consolas, monospace" font-size="9" font-weight="bold">Time [Seconds] →</text>
           <path d="${pathD1}" fill="none" stroke="#000" stroke-width="2.5"/>
-          <line x1="${padL}" y1="${padT + plotH - (dT_steady / (dT_steady * 1.15)) * plotH}" x2="${padL + plotW}" y2="${padT + plotH - (dT_steady / (dT_steady * 1.15)) * plotH}" stroke="#666" stroke-width="1" stroke-dasharray="4 3"/>
           <text x="${padL + 15}" y="${padT + 18}" font-family="Consolas, monospace" font-size="9.5" font-weight="bold">T(t) = ${T_amb}°C + ${dT_steady}°C·(1 - e^-t/${tau.toFixed(0)}s)</text>
         </svg>
       `;
-      document.getElementById("chart-temp-time").innerHTML = svgChart1;
 
-      // 2. Chart 2: Temperature Rise vs Current (SVG)
+      // SVG Chart 2
       const maxCurrent = c.iout * 2.2;
       let pathD2 = "";
       for (let s = 0; s <= 50; s++) {
         const cur = (s / 50) * maxCurrent;
-        // IPC-2221 relation: dT = (I / (k * A^0.725))^(1/0.44)
         const dtVal = dT_steady * Math.pow(cur / Math.max(0.1, c.iout), 1 / 0.44);
         const x = padL + (cur / maxCurrent) * plotW;
         const clampedDt = Math.min(dtVal, dT_steady * 3.5);
@@ -1224,7 +1221,7 @@
       const xOper = padL + (c.iout / maxCurrent) * plotW;
       const yOper = padT + plotH - (dT_steady / (dT_steady * 3.5)) * plotH;
 
-      const svgChart2 = `
+      document.getElementById("chart-temp-current").innerHTML = `
         <svg width="${wSvg}" height="${hSvg}" viewBox="0 0 ${wSvg} ${hSvg}">
           <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
           <line x1="${padL}" y1="${padT + plotH}" x2="${padL + plotW}" y2="${padT + plotH}" stroke="#000" stroke-width="1.5"/>
@@ -1237,11 +1234,10 @@
           <text x="${xOper + 8}" y="${yOper - 4}" font-family="Consolas, monospace" font-size="9" font-weight="bold">Operating Point: ${c.iout.toFixed(1)}A (+${dT_steady}°C)</text>
         </svg>
       `;
-      document.getElementById("chart-temp-current").innerHTML = svgChart2;
     }
 
     // =========================================================
-    // 3. HIGH-SPEED INTERFACE SOLVER
+    // 4. HIGH-SPEED LAYER ALLOCATION & INTER-LAYER VIAS
     // =========================================================
     const HS_PRESETS = {
       mipi:   { zDiff: 100, z0: 50, rate: 2.5,  tr: 120, skew: 10, loss: 6.0,  std: "MIPI D-PHY v2.5" },
@@ -1273,29 +1269,32 @@
       const ifaceStd = HS_PRESETS[ifaceKey] ? HS_PRESETS[ifaceKey].std : "IPC-2141A / Custom SI";
       const targetZdiff = Math.max(30, parseFloat(document.getElementById("hs-zdiff-target").value) || 100);
       const targetZ0 = Math.max(20, parseFloat(document.getElementById("hs-z0-target").value) || 50);
-      const mode = document.getElementById("hs-mode").value;
+
+      const layerMode = document.getElementById("hs-layer-select").value;
       const shRatio = parseFloat(document.getElementById("hs-coupling").value) || 1.25;
 
-      // Link directly to stackup parameters:
-      const H = activePrepregMm;
-      const T = activeCuOuterMm;
-      const er = Math.max(1.8, parseFloat(document.getElementById("hs-er").value) || 4.2);
-      const df = Math.max(0.001, parseFloat(document.getElementById("hs-df").value) || 0.018);
+      // Extract dielectric constant from the linked material library
+      const er = parseFloat(document.getElementById("mat-dk").value) || 4.40;
+      const df = parseFloat(document.getElementById("mat-df").value) || 0.018;
 
-      const dataRateGbps = Math.max(0.1, parseFloat(document.getElementById("hs-rate").value) || 2.5);
-      const tr_ps = Math.max(5, parseFloat(document.getElementById("hs-tr").value) || 120);
-      const skew_ps = Math.max(0.5, parseFloat(document.getElementById("hs-skew").value) || 10);
-      const lossBudget_dB = Math.max(0.5, parseFloat(document.getElementById("hs-loss-budget").value) || 6.0);
+      let H = activePrepregMm;
+      let T = activeCuOuterMm;
+      let isStripline = layerMode.includes("Stripline");
+
+      if (isStripline) {
+        T = activeCuInnerMm;
+        H = activePrepregMm; // Prepreg between L2 GND and L3
+      }
 
       const S_mm = H * shRatio;
       let couplingFactor = 1.0, wDiff_mm = 0.20, wSe_mm = 0.25, wDiffFormula = "", wSeFormula = "";
 
-      if (mode === "microstrip") {
+      if (!isStripline) {
         couplingFactor = 1 - 0.48 * Math.exp(-0.96 * (S_mm / H));
         const reqZ0_diff = targetZdiff / (2 * couplingFactor);
         wDiff_mm = ((5.98 * H) / Math.exp((reqZ0_diff * Math.sqrt(er + 1.41)) / 87) - T) / 0.8;
         wSe_mm = ((5.98 * H) / Math.exp((targetZ0 * Math.sqrt(er + 1.41)) / 87) - T) / 0.8;
-        wDiffFormula = `Z₀_req = ${reqZ0_diff.toFixed(1)}Ω; W = [5.98·H / e^(${reqZ0_diff.toFixed(1)}·√(εr+1.41)/87) - T] / 0.8 = ${wDiff_mm.toFixed(3)} mm (${toMil(wDiff_mm).toFixed(1)} mil)`;
+        wDiffFormula = `Microstrip Layer: Z₀_req = ${reqZ0_diff.toFixed(1)}Ω; W = [5.98·${H.toFixed(3)} / e^(${reqZ0_diff.toFixed(1)}·√(${er}+1.41)/87) - ${T.toFixed(3)}] / 0.8 = ${wDiff_mm.toFixed(3)} mm`;
         wSeFormula = `W_se = [5.98·H / e^(${targetZ0}·√(εr+1.41)/87) - T] / 0.8 = ${wSe_mm.toFixed(3)} mm (${toMil(wSe_mm).toFixed(1)} mil)`;
       } else {
         const b = 2 * H + T;
@@ -1303,24 +1302,28 @@
         const reqZ0_diff = targetZdiff / (2 * couplingFactor);
         wDiff_mm = ((4 * b) / (0.67 * Math.PI * Math.exp((reqZ0_diff * Math.sqrt(er)) / 60)) - T) / 0.8;
         wSe_mm = ((4 * b) / (0.67 * Math.PI * Math.exp((targetZ0 * Math.sqrt(er)) / 60)) - T) / 0.8;
-        wDiffFormula = `b = 2H+T = ${b.toFixed(3)} mm; W = [4b / (0.67·π·e^(Z₀·√εr/60)) - T] / 0.8 = ${wDiff_mm.toFixed(3)} mm`;
-        wSeFormula = `W_se = [4b / (0.67·π·e^(${targetZ0}·√εr/60)) - T] / 0.8 = ${wSe_mm.toFixed(3)} mm`;
+        wDiffFormula = `Stripline Layer (Sandwiched L2/L4): b = ${b.toFixed(3)} mm; W = [4b / (0.67·π·e^(Z₀·√${er}/60)) - T] / 0.8 = ${wDiff_mm.toFixed(3)} mm`;
+        wSeFormula = `W_se = [4b / (0.67·π·e^(${targetZ0}·√${er}/60)) - T] / 0.8 = ${wSe_mm.toFixed(3)} mm (${toMil(wSe_mm).toFixed(1)} mil)`;
       }
 
-      wDiff_mm = Math.max(0.05, wDiff_mm);
-      wSe_mm = Math.max(0.05, wSe_mm);
+      wDiff_mm = Math.max(0.04, wDiff_mm);
+      wSe_mm = Math.max(0.04, wSe_mm);
       const minGuard_mm = Math.max(3 * wDiff_mm, 2.5 * H);
 
-      document.getElementById("svg-lbl-w").textContent = `W = ${wDiff_mm.toFixed(2)} mm (${toMil(wDiff_mm).toFixed(1)} mil)`;
-      document.getElementById("svg-lbl-s").textContent = `S = ${S_mm.toFixed(2)} mm (${toMil(S_mm).toFixed(1)} mil)`;
-
       document.getElementById("res-hs-geometry").innerHTML =
+        makeRow(`Specific Layer Allocated`, `${layerMode.replace(/_/g, " ")}`, "Stackup Placement", `Referenced directly to adjacent Ground Plane (H = ${H.toFixed(3)} mm / ${toMil(H).toFixed(1)} mil)`) +
         makeRow(`Required Diff Trace Width (W) for ${targetZdiff}Ω`, `${wDiff_mm.toFixed(3)} mm (${toMil(wDiff_mm).toFixed(1)} mil)`, `IPC-2141A / ${ifaceStd}`, wDiffFormula) +
         makeRow(`Required Diff Trace Spacing (S) for ${targetZdiff}Ω`, `${S_mm.toFixed(3)} mm (${toMil(S_mm).toFixed(1)} mil)`, "IPC-2141A Edge-Coupled", `S = ${shRatio} × H = ${S_mm.toFixed(3)} mm (${toMil(S_mm).toFixed(1)} mil)`) +
         makeRow(`Single-Ended Reference Width (W_se) for ${targetZ0}Ω`, `${wSe_mm.toFixed(3)} mm (${toMil(wSe_mm).toFixed(1)} mil)`, "IPC-2141A §4.2", wSeFormula) +
         makeRow("Minimum Pair-to-Signal Clearance (3W Guard)", `${minGuard_mm.toFixed(2)} mm (${toMil(minGuard_mm).toFixed(1)} mil)`, "IPC-2251 Crosstalk Limit", `S_guard = max(3W, 2.5H) = ${minGuard_mm.toFixed(2)} mm`);
 
-      const er_eff = mode === "microstrip" ? (er + 1) / 2 + ((er - 1) / 2) * (1 / Math.sqrt(1 + 12 * (H / wDiff_mm))) : er;
+      // Length calculation
+      const dataRateGbps = Math.max(0.1, parseFloat(document.getElementById("hs-rate").value) || 2.5);
+      const tr_ps = Math.max(5, parseFloat(document.getElementById("hs-tr").value) || 120);
+      const skew_ps = Math.max(0.5, parseFloat(document.getElementById("hs-skew").value) || 10);
+      const lossBudget_dB = Math.max(0.5, parseFloat(document.getElementById("hs-loss-budget").value) || 6.0);
+
+      const er_eff = isStripline ? er : (er + 1) / 2 + ((er - 1) / 2) * (1 / Math.sqrt(1 + 12 * (H / wDiff_mm)));
       const vp_mm_ps = 0.29979 / Math.sqrt(er_eff);
 
       const lCrit_mm = (tr_ps * vp_mm_ps) / 6.0;
@@ -1341,24 +1344,63 @@
     }
 
     // =========================================================
-    // 4. A4 PDF REPORT EXPORT (PURE TECHNICAL DATA - NO ANIMATIONS)
+    // 5. INTER-LAYER TRANSITION & VIA IMPEDANCE MATCHING
+    // =========================================================
+    function solveViaTransition() {
+      const drill_mm = Math.max(0.1, parseFloat(document.getElementById("tr-via-drill").value) || 0.25);
+      const pad_mm = Math.max(drill_mm + 0.1, parseFloat(document.getElementById("tr-via-pad").value) || 0.45);
+      const anti_mm = Math.max(pad_mm + 0.1, parseFloat(document.getElementById("tr-via-anti").value) || 0.65);
+      const depthMode = document.getElementById("tr-via-depth").value;
+
+      document.getElementById("lbl-via-drill").textContent = `= ${toMil(drill_mm).toFixed(1)} mil`;
+      document.getElementById("lbl-via-pad").textContent = `= ${toMil(pad_mm).toFixed(1)} mil`;
+      document.getElementById("lbl-via-anti").textContent = `= ${toMil(anti_mm).toFixed(1)} mil`;
+
+      const er = parseFloat(document.getElementById("mat-dk").value) || 4.40;
+      const h_via = (depthMode === "through") ? activeTotalBoardMm : (activeCuOuterMm + activePrepregMm + activeCuInnerMm);
+
+      // IPC-2141A Via Parasitics:
+      // C_via (pF) ≈ (1.41 * er * T * D_pad) / (D_anti - D_pad)
+      const C_via_pF = (1.41 * er * h_via * pad_mm) / (anti_mm - pad_mm) * 0.0254; // scaled
+      // L_via (nH) ≈ 5.08 * h * [ln(4h / D) + 1] in inches
+      const h_in = h_via / 25.4;
+      const d_in = drill_mm / 25.4;
+      const L_via_nH = 5.08 * h_in * (Math.log((4 * h_in) / d_in) + 1);
+
+      // Via Impedance Z_via = sqrt(L / C)
+      const Z_via = Math.sqrt((L_via_nH * 1e-9) / (C_via_pF * 1e-12));
+
+      // Maximum stitching via distance for ground return path (max pitch <= lambda / 10)
+      const dataRateGbps = parseFloat(document.getElementById("hs-rate").value) || 2.5;
+      const f_GHz = dataRateGbps / 2.0;
+      const lambda_mm = 299.79 / (f_GHz * Math.sqrt(er));
+      const maxGndStitchDistance_mm = lambda_mm / 10.0;
+
+      document.getElementById("res-via-transition").innerHTML =
+        makeRow("Transition Via Impedance (Z_via)", `${Z_via.toFixed(1)} Ω`, "IPC-2141A §3.3", `Z_via = √(L_via / C_via) = √(${L_via_nH.toFixed(2)}nH / ${C_via_pF.toFixed(2)}pF) = ${Z_via.toFixed(1)} Ω (Target 50Ω SE / 100Ω Diff)`) +
+        makeRow("Via Capacitance & Inductance", `${C_via_pF.toFixed(2)} pF | ${L_via_nH.toFixed(2)} nH`, "Via Parasitics", `C_via = (1.41·εr·h·D_pad)/(D_anti - D_pad); L_via = 5.08·h·[ln(4h/d) + 1]`) +
+        makeRow("GND Return Stitching Via Distance", `≤ ${maxGndStitchDistance_mm.toFixed(2)} mm (≤ ${toMil(maxGndStitchDistance_mm).toFixed(0)} mil)`, "High-Speed Return Path Rule", `Max spacing ≤ λ/10 at ${f_GHz.toFixed(1)} GHz (Place GND via directly beside signal pair)`) +
+        makeRow("Layout Implementation Rule", "Matched Pair Symmetrical Breakout", "Signal Integrity Guideline", "Both P and N vias must experience identical antipad cutouts and equal stub lengths to prevent mode conversion");
+    }
+
+    // =========================================================
+    // 6. A4 PDF REPORT EXPORT
     // =========================================================
     function exportA4PdfReport() {
       syncStackup();
       calcPowerAndThermal();
       solveHighSpeed();
+      solveViaTransition();
 
       const now = new Date();
-      document.getElementById("pdf-timestamp").innerHTML =
-        `Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}<br>Ref: IPC-REPORT-2026-ENG`;
+      document.getElementById("pdf-timestamp").innerHTML = `Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}<br>Ref: IPC-REPORT-2026-ENG`;
 
-      // SECTION 1: STACKUP
-      const layers = document.getElementById("stk-layers").value;
+      const matSel = document.getElementById("mat-select");
+      const matName = matSel.options[matSel.selectedIndex].text;
       document.getElementById("pdf-params-stackup").textContent =
-        `Configuration: ${layers} Copper Layers | Outer Cu = ${activeCuOuterMm.toFixed(3)} mm (${toMil(activeCuOuterMm).toFixed(2)} mil) | Prepreg H = ${activePrepregMm.toFixed(3)} mm (${toMil(activePrepregMm).toFixed(2)} mil)`;
+        `Material: ${matName} | Layers = ${document.getElementById("stk-layers").value}L | Total Thickness = ${activeTotalBoardMm.toFixed(3)} mm (${toMil(activeTotalBoardMm).toFixed(1)} mil)`;
       document.getElementById("pdf-res-stackup").innerHTML = document.getElementById("res-stackup").innerHTML;
 
-      // Static cross-section SVG (No animations)
       document.getElementById("pdf-static-stackup").innerHTML = `
         <svg width="220" height="90" viewBox="0 0 220 90">
           <rect x="5" y="10" width="210" height="6" fill="#d1d5db" stroke="#000"/>
@@ -1367,12 +1409,11 @@
           <rect x="5" y="62" width="210" height="12" fill="#000" stroke="#000"/>
           <rect x="5" y="74" width="210" height="6" fill="#d1d5db" stroke="#000"/>
           <text x="15" y="25" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">L1 Top Cu (${toMil(activeCuOuterMm).toFixed(1)} mil)</text>
-          <text x="15" y="48" fill="#000" font-family="Consolas, monospace" font-size="8" font-weight="bold">Core Dielectric Substrate</text>
+          <text x="15" y="48" fill="#000" font-family="Consolas, monospace" font-size="8" font-weight="bold">Substrate Core (Dk = ${document.getElementById("mat-dk").value})</text>
           <text x="15" y="71" fill="#fff" font-family="Consolas, monospace" font-size="8" font-weight="bold">L_bot Bottom Cu</text>
         </svg>
       `;
 
-      // SECTION 2: CONVERTERS & THERMAL GRAPHS
       document.getElementById("pdf-params-power").textContent =
         `Power Architecture: PoL DC-DC Conversions (24V, 5V, 3.3V, 1.8V) + Mains 230V Safety Distances`;
 
@@ -1411,7 +1452,6 @@
       convTableHtml += `</tbody></table>`;
       document.getElementById("pdf-table-converters").innerHTML = convTableHtml;
 
-      // Transfer graphs cleanly
       document.getElementById("pdf-graph-temp-time").innerHTML =
         `<div style="font-weight:700; font-size:7.5pt; margin-bottom:2px;">Transient Heating Curve T(t) vs. Time</div>` +
         document.getElementById("chart-temp-time").innerHTML;
@@ -1422,35 +1462,20 @@
 
       document.getElementById("pdf-res-clearance").innerHTML = document.getElementById("res-clearance").innerHTML;
 
-      // SECTION 3: HIGH SPEED
       const ifaceSel = document.getElementById("hs-interface");
+      const layerSel = document.getElementById("hs-layer-select");
       document.getElementById("pdf-params-hs").textContent =
-        `Standard: ${ifaceSel.options[ifaceSel.selectedIndex].text} | Prepreg H = ${activePrepregMm.toFixed(3)} mm | Cu T = ${activeCuOuterMm.toFixed(3)} mm`;
+        `Standard: ${ifaceSel.options[ifaceSel.selectedIndex].text} | Layer: ${layerSel.value} | Target Z_diff = ${document.getElementById("hs-zdiff-target").value}Ω`;
       document.getElementById("pdf-res-hs").innerHTML =
-        document.getElementById("res-hs-geometry").innerHTML +
-        document.getElementById("res-hs-lengths").innerHTML;
-
-      // Static High-Speed Cross Section SVG
-      document.getElementById("pdf-static-hs").innerHTML = `
-        <svg width="220" height="90" viewBox="0 0 220 90">
-          <rect x="5" y="70" width="210" height="12" fill="#000"/>
-          <text x="45" y="80" fill="#fff" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">REFERENCE GND PLANE</text>
-          <rect x="5" y="30" width="210" height="40" fill="#f8f9fa" stroke="#000"/>
-          <rect x="40" y="20" width="40" height="10" fill="#000"/>
-          <rect x="110" y="20" width="40" height="10" fill="#000"/>
-          <text x="45" y="16" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">D+ (W)</text>
-          <text x="115" y="16" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">D- (W)</text>
-          <line x1="80" y1="25" x2="110" y2="25" stroke="#000" stroke-width="1.2"/>
-          <text x="88" y="21" font-family="Consolas, monospace" font-size="7.5" font-weight="bold">S</text>
-        </svg>
-      `;
+        document.getElementById("res-hs-geometry").innerHTML + document.getElementById("res-hs-lengths").innerHTML;
+      document.getElementById("pdf-res-via-transition").innerHTML = document.getElementById("res-via-transition").innerHTML;
 
       window.print();
     }
 
     // Startup initialization
     renderConverterRows();
-    syncStackup();
+    applyMaterialPreset();
     applyInterfacePreset();
   </script>
 </body>
